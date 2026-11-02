@@ -8,18 +8,19 @@
     <title>Lubuya Security Company</title>
     
   </head>
+
   <body>
     <header>
       <div class="nav-container">
         <div class="logo">Lubuya Security</div>
         <ul class="nav-links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#services">Client Organisation</a></li>
-          <li><a href="#about">Company Branch</a></li>
-          <li><a href="#contact">Guard</a></li>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'client-organisation' %}">Client Organisation</a></li>
+          <li><a href="{% url 'company-branch' %}">Company Branch</a></li>
+          <li><a href="{% url 'guard' %}">Guard</a></li>
           <li><a href="#contact">Weapon</a></li>
           <li><a href="#contact">Shift</a></li>
-          <li><a href="#contact">Client Payment</a></li>
+          <li><a href="{% url 'client-payment' %}">Client Payment</a></li>
           <li><a href="#contact">Deployment</a></li>
           <li><a href="#contact">Guard Deployment</a></li>
           <li><a href="#contact">Guard Payment</a></li>
