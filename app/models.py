@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class ClientOrganisation(models.Model):
-    client_name = models.CharsField(max_length=100)
+    client_name = models.CharField(max_length=100)
     code = models.CharField(max_length=10, unique=True)
     location = models.CharField(max_length=100)
     contact_person = models.CharField(max_length=100)
