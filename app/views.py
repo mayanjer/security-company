@@ -14,6 +14,8 @@ def shift_view(request):
         form = ShiftForm(request.POST)
         if form.is_valid():
             form.save()
+        else:
+            print("failed")
     form = ShiftForm()
     context = {'form':form}
     return render(request, 'shift.html', context)
@@ -31,7 +33,7 @@ def client_organisation_view(request):
     if request.method == "POST":
         form = ClientOrganisationForm(request.POST)
         if form.is_valid():
-            form.save
+            form.save()
     form = ClientOrganisationForm()
     context = {
         'form': form
@@ -40,7 +42,7 @@ def client_organisation_view(request):
 
 def client_payment_view(request):
     if request.method == "POST":
-        form = ClientOrganisationForm(request.POST)
+        form = ClientPaymentForm(request.POST)
         if form.is_valid():
             form.save()
 
@@ -71,6 +73,7 @@ def guard_deployment_view(request):
         form = GuardDeploymentForm(request.POST)
         if form.is_valid():
             form.save()
+    form = GuardDeploymentForm()
     context = {'form':form}
     return render(request, 'guard-deployment.html', context)
 
