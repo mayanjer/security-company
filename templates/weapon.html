@@ -52,31 +52,15 @@
         <th>Serial Number</th>
         <th>Type</th>
       </tr>
+      {% for weapon in weapons %}
       <tr>
-        <td>Tropical Bank</td>
-        <td></td>
-        <td></td>
+        <td>{{weapon.name}}</td>
+        <td>{{ weapon.serial_number }}</td>
+        <td>{{ weapon.type }}</td>
       </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Islamic University In Uganda</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Makerere University</td>
-        <td></td>
-
-        <td></td>
-      </tr>
+      {% endfor %}
+      
+     
     </table>
   </body>
 </html>

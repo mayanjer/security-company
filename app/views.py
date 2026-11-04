@@ -26,7 +26,8 @@ def weapon_view(request):
         if form.is_valid():
             form.save()
     form = WeaponForm()
-    context = {'form':form}
+    weapons = Weapon.objects.all()
+    context = {'form':form, 'weapons':weapons}
     return render(request, 'weapon.html', context)
 
 def client_organisation_view(request):
@@ -35,8 +36,10 @@ def client_organisation_view(request):
         if form.is_valid():
             form.save()
     form = ClientOrganisationForm()
+    organisations = ClientOrganisation.objects.all()
     context = {
-        'form': form
+        'form': form,
+        'organisations':organisations
         }
     return render(request, 'client-organisation.html', context)
 
@@ -56,6 +59,7 @@ def company_branch_view(request):
         if form.is_valid():
             form.save()
     form = CompanyBranchForm()
+
     context = {'form':form}
     return render(request, 'company-branch.html', context)
 
