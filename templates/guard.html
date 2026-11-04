@@ -1,4 +1,5 @@
 {% load static %}
+{% load crispy_forms_tags %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'css/general.css' %}" />
+     <link rel ="stylesheet" href = "{% static 'css/bootstrap.min.css' %}"/>
   </head>
   <body>
      <header>
@@ -35,47 +37,8 @@
           </div>
 
           <form class="form">
-            <div class="input-group">
-              <label for="first-name">First Name</label>
-              <div class="input-field">
-                <input type="text" required />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label for="last-name">Last Name</label>
-              <div class="input-field">
-                <input type="text" required />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label for="birth-date">Birthdate</label>
-              <div class="input-field">
-                <input type="date" required />
-              </div>
-            </div>
-
-             <div class="input-group">
-              <label for="contact">Contact</label>
-              <div class="input-field">
-                <input type="number" required />
-              </div>
-            </div>
-
-              <div class="input-group">
-              <label for="branch">Branch</label>
-              <div class="input-field">
-                <input type="text" required />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label for="salary">Salary</label>
-              <div class="input-field">
-                <input type="number" required />
-              </div>
-            </div>
+            {% csrf_token %}
+            {{ form|crispy }}
 
            
 
