@@ -41,7 +41,7 @@ class ShiftForm(forms.ModelForm):
         model = Shift
         fields = "__all__"
 
-class WweaponAssignmentForm(forms.ModelForm):
+class WeaponAssignmentForm(forms.ModelForm):
     class Meta:
         model = WeaponAssignment
         fields = "__all__"
