@@ -1,5 +1,4 @@
-{% load static %}
-{% load crispy_forms_tags %}
+{% load static %} {% load crispy_forms_tags %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,14 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'css/general.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
   </head>
   <body>
-     <header>
+    <header>
       <div class="nav-container">
         <div class="logo">Lubuya Security</div>
         <ul class="nav-links">
           <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'client-organisation' %}">Client Organisation</a></li>
+          <li>
+            <a href="{% url 'client-organisation' %}">Client Organisation</a>
+          </li>
           <li><a href="{% url 'company-branch' %}">Company Branch</a></li>
           <li><a href="{% url 'guard' %}">Guard</a></li>
           <li><a href="{% url 'weapon' %}">Weapon</a></li>
@@ -35,50 +37,9 @@
             <p>Enter your Guard Payment Details</p>
           </div>
 
-          <form class="form">
-            <div class="input-group">
-              <label for="guard-name">Guard Name</label>
-              <div class="input-field">
-                <input type="text" required />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label for="amount">Amount Paid</label>
-              <div class="input-field">
-                <input type="number" required />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label for="payment-date">Payment Date</label>
-              <div class="input-field">
-                <input type="date" required />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label for="payment-method">Payment Method</label>
-              <div class="input-field">
-                <input type="text" required />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label for="month">Month</label>
-              <div class="input-field">
-                <input type="text" required />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label for="year">Year</label>
-              <div class="input-field">
-                <input type="text" required />
-              </div>
-            </div>
-
-            <button type="submit" class="submit-btn">
+          <form class="form" method="post">
+            {% csrf_token %} {{form|crispy}}
+            <button class="submit-btn">
               <span>Submit</span>
             </button>
           </form>
@@ -100,17 +61,6 @@
         <td></td>
         <td></td>
         <td></td>
-                <td></td>
-        <td></td>
-
-        <td></td>
-      </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-
-        <td></td>
         <td></td>
         <td></td>
 
@@ -119,12 +69,22 @@
       <tr>
         <td>NSSF Head Office</td>
         <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+        <td></td>
+
+        <td></td>
+      </tr>
+      <tr>
+        <td>NSSF Head Office</td>
+        <td></td>
 
         <td></td>
         <td></td>
-                <td></td>
         <td></td>
-
+        <td></td>
       </tr>
       <tr>
         <td>Islamic University In Uganda</td>

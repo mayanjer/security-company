@@ -37,9 +37,9 @@
             <p>Enter your Weapon Details</p>
           </div>
 
-          <form class="form">
+          <form class="form" method = "post">
             {% csrf_token %} {{form|crispy }}
-            <button type="submit" class="submit-btn">
+            <button class="submit-btn">
               <span>Submit</span>
             </button>
           </form>
