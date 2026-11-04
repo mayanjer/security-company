@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .forms import *
 
 # Create your views here.
 def login_view(request):
@@ -14,10 +15,16 @@ def weapon_view(request):
     return render(request, 'weapon.html')
 
 def client_organisation_view(request):
-    return render(request, 'client-organisation.html')
+    form = ClientOrganisationForm()
+    context = {
+        'form': form
+        }
+    return render(request, 'client-organisation.html', context)
 
 def client_payment_view(request):
-    return render(request, 'client-payment.html')
+    form = ClientPaymentForm()
+    context = {'form':form}
+    return render(request, 'client-payment.html', context)
 
 def company_branch_view(request):
     return render(request, 'company-branch.html')
