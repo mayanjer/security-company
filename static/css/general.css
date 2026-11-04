@@ -109,6 +109,23 @@ body {
   align-items: center;
   padding: 1.25rem 2rem;
 }
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--accent-blue);
+}
 header {
   background-color: var(--white);
   border-bottom: 1px solid #e2e8f0;

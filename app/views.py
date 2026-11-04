@@ -17,7 +17,7 @@ def client_organisation_view(request):
     return render(request, 'client-organisation.html')
 
 def client_payment_view(request):
-    return render(request, 'client_payment.html')
+    return render(request, 'client-payment.html')
 
 def company_branch_view(request):
     return render(request, 'company-branch.html')
