@@ -36,4 +36,3 @@ def guard_payment_view(request):
 
 def weapon_assignment_view(request):
     return render(request, 'weapon-assignment.html')
-
