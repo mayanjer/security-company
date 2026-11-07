@@ -50,7 +50,9 @@ def client_payment_view(request):
             form.save()
 
     form = ClientPaymentForm()
-    context = {'form':form}
+    payments = ClientPayment.objects.all()
+    context = {'form':form,
+               'payments':payments}
     return render(request, 'client-payment.html', context)
 
 def company_branch_view(request):
