@@ -71,7 +71,8 @@ def deployment_view(request):
         if form.is_valid():
             form.save()
     form = DeploymentForm()
-    context = {'form':form}
+    deployments = Deployment.objects.all()
+    context = {'form':form, 'deployments':deployments}
     return render(request, 'deployment.html', context)
 
 def guard_deployment_view(request):

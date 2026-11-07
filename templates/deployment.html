@@ -57,52 +57,16 @@
         <th>Shift</th>
        
       </tr>
+      {% for deployment in deployments %}
       <tr>
-        <td>Tropical Bank</td>
-        <td></td>
-        <td></td>
-  
-
-        <td></td>
-        <td></td>
+        <td>{{deployment.client_organisation}}</td>
+        <td>{{deployment.branch_id}}</td>
+        <td>{{deployment.start_date}}</td>
+        <td>{{deployment.end_date}}</td>
+        <td>{{deployment.shift}}</td>
       </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
+      {% endfor %}
       
-
-        <td></td>
-        <td></td>
-
-      </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-       
-
-        <td></td>
-      </tr>
-      <tr>
-        <td>Islamic University In Uganda</td>
-        <td></td>
-        <td></td>
-       
-
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Makerere University</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-
-      
-
-      </tr>
     </table>
   </body>
 </html>
