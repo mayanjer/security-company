@@ -61,8 +61,8 @@ def company_branch_view(request):
         if form.is_valid():
             form.save()
     form = CompanyBranchForm()
-
-    context = {'form':form}
+    branches = CompanyBranch.objects.all()
+    context = {'form':form, 'branches':branches}
     return render(request, 'company-branch.html', context)
 
 def deployment_view(request):

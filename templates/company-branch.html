@@ -58,53 +58,18 @@
         <th>Organisation Email</th>
         <th>Gross Amount Collected</th>
       </tr>
+      {% for branch in branches %}
       <tr>
-        <td>Tropical Bank</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>{{branch.branch_name}}</td>
+        <td>{{branch.code}}</td>
+        <td>{{branch.location}}</td>
+        <td>{{branch.contact_person}}</td>
+        <td>{{branch.status}}</td>
+        <td>{{branch.branch_email}}</td>
         <td></td>
       </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-      </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Islamic University In Uganda</td>
-        <td></td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Makerere University</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-      </tr>
+      {% endfor %}
+      
     </table>
   </body>
 </html>
