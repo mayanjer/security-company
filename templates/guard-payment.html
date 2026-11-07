@@ -56,57 +56,19 @@
         <th>Month</th>
         <th>Year</th>
       </tr>
+      {% for payment in payments %}
       <tr>
-        <td>Tropical Bank</td>
+        <td>{{payment.guard}}</td>
+        <td>{{payment.amount_paid}}</td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>{{payment.payment_method}}</td>
+        <td>{{payment.date_paid}}</td>
+        <td>{{payment.month}}</td>
 
-        <td></td>
+        <td>{{payment.year}}</td>
       </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-      </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Islamic University In Uganda</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Makerere University</td>
-        <td></td>
-
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-      </tr>
+      {% endfor %}
+    
     </table>
   </body>
 </html>

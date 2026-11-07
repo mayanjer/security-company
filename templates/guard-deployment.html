@@ -52,26 +52,13 @@
         <th>Guard Name</th>
         <th>Deployment Location</th>
       </tr>
+      {% for deployment in deployments %}
       <tr>
-        <td>Tropical Bank</td>
-        <td></td>
+        <td>{{deployment.guard}}</td>
+        <td>{{deployment.deployment.branch}}</td>
       </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Islamic University In Uganda</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Makerere University</td>
-        <td></td>
-      </tr>
+      {% endfor %}
+     
     </table>
   </body>
 </html>

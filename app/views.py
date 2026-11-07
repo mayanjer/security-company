@@ -81,7 +81,8 @@ def guard_deployment_view(request):
         if form.is_valid():
             form.save()
     form = GuardDeploymentForm()
-    context = {'form':form}
+    deployments = GuardDeployment.objects.all()
+    context = {'form':form, 'deployments':deployments}
     return render(request, 'guard-deployment.html', context)
 
 def guard_view(request):
@@ -99,7 +100,8 @@ def guard_payment_view(request):
         if form.is_valid():
             form.save()
     form = GuardPaymentForm()
-    context = {'form':form}
+    payments = GuardPayment.objects.all()
+    context = {'form':form, 'payments':payments}
     return render(request, 'guard-payment.html', context)
 
 def weapon_assignment_view(request):
