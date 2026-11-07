@@ -55,31 +55,14 @@
         <th>Start Time</th>
         <th>End Time</th>
       </tr>
+      {% for shift in shifts %}
       <tr>
-        <td>Tropical Bank</td>
-        <td></td>
-        <td></td>
+        <td>{{shift.name}}</td>
+        <td>{{shift.start_time}}</td>
+        <td>{{shift.end_time}}</td>
       </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Islamic University In Uganda</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Makerere University</td>
-        <td></td>
-
-        <td></td>
-      </tr>
+      {% endfor %}
+      
     </table>
   </body>
 </html>

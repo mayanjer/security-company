@@ -54,35 +54,14 @@
         <th>Assignment Date</th>
         <th>Return Date</th>
       </tr>
+      {% for assignment in assignments %}
       <tr>
-        <td>Tropical Bank</td>
-        <td></td>
-        <td></td>
+        <td>{{assignment.guard}}</td>
+        <td>{{assignment.weapon}}</td>
+        <td>{{assignment.return_date}}</td>
       </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Islamic University In Uganda</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Makerere University</td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-      </tr>
+      {% endfor %}
+      
     </table>
   </body>
 </html>

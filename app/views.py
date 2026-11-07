@@ -17,7 +17,8 @@ def shift_view(request):
         else:
             print("failed")
     form = ShiftForm()
-    context = {'form':form}
+    shifts = Shift.objects.all()
+    context = {'form':form, 'shifts':shifts}
     return render(request, 'shift.html', context)
 
 def weapon_view(request):
@@ -111,5 +112,6 @@ def weapon_assignment_view(request):
         if form.is_valid():
             form.save()
     form = WeaponAssignmentForm()
-    context = {'form':form}
+    assignemts = WeaponAssignment.objects.all() 
+    context = {'form':form, 'assignments':assignemts}
     return render(request, 'weapon-assignment.html', context)
