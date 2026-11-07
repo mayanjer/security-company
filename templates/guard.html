@@ -55,55 +55,22 @@
         <th>Birthdate</th>
         <th>Contact</th>
         <th>Gender</th>
-        <th>Branch</th>
+        <th>Address</th>
         <th>Salary</th>
       </tr>
+      {% for guard in guards %}
       <tr>
-        <td>Tropical Bank</td>
-        <td></td>
-        <td></td>
-                <td></td>
+        <td>{{guard.first_name}} {{guard.last_name}}</td>
+        <td>{{guard.date_of_birth}}</td>
+        <td>{{guard.phone_number}}</td>
+        <td>{{guard.gender}}</td>
 
-        <td></td>
-        <td></td>
+        <td>{{guard.address}}</td>
+        <td>{{guard.salary}}</td>
       </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-        <td></td>
+      {% endfor %}
+     
 
-        <td></td>
-
-        <td></td>
-      </tr>
-      <tr>
-        <td>NSSF Head Office</td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Islamic University In Uganda</td>
-        <td></td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Makerere University</td>
-        <td></td>
-        <td></td>
-
-        <td></td>
-        <td></td>
-
-        <td></td>
-      </tr>
     </table>
   </body>
 </html>

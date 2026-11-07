@@ -91,7 +91,8 @@ def guard_view(request):
         if form.is_valid():
             form.save()
     form = GuardForm()
-    context = {'form':form}
+    guards = Guard.objects.all()
+    context = {'form':form, 'guards':guards}
     return render(request, 'guard.html', context)
 
 def guard_payment_view(request):
