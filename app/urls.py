@@ -14,6 +14,7 @@ urlpatterns = [
     path('weapon/', weapon_view, name='weapon'),
     path('weapon_assignment/', weapon_assignment_view, name = 'weapon-assignment'),
      path('shift/', shift_view, name = 'shift'),
+     path('edit-shift/<int:pk>', edit_shift_view, name = "edit-shift"),
      path('guard_payment/', guard_payment_view, name = 'guard-payment')
    
 ]

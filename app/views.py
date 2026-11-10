@@ -21,8 +21,17 @@ def shift_view(request):
     context = {'form':form, 'shifts':shifts}
     return render(request, 'shift.html', context)
 
-def edit_shift_view(request):
-    return redirect(shift_view)
+def edit_shift_view(request, pk):
+    print(pk)
+    shift = Shift.objects.get(pk = pk)
+    if request.method == "POST":
+        form = ShiftForm(request.POST, instance=shift)
+        if form.is_valid():
+            form.save()
+    else:
+        form = ShiftForm(instance = shift)
+    context = {'form':form}
+    return render(request,'edit-shift.html', context)
 
 def weapon_view(request):
     if request.method == "POST":
