@@ -5,7 +5,10 @@ urlpatterns = [
     path('login/', login_view, name = 'login'),
    
     path('', index_view, name='index'),
+
     path('client_organisation/', client_organisation_view, name = "client-organisation"),
+    path('edit-client-organisation/<int:pk>', edit_client_organisation_view, name = "edit-client-organisation"),
+
     path('client_payment/', client_payment_view, name = "client-payment"),
     path('company_branch/', company_branch_view, name = 'company-branch'),
     path('deployment/', deployment_view, name = "deployment"),
@@ -13,8 +16,10 @@ urlpatterns = [
     path('guard/', guard_view, name = 'guard'),
     path('weapon/', weapon_view, name='weapon'),
     path('weapon_assignment/', weapon_assignment_view, name = 'weapon-assignment'),
+
      path('shift/', shift_view, name = 'shift'),
      path('edit-shift/<int:pk>', edit_shift_view, name = "edit-shift"),
+
      path('guard_payment/', guard_payment_view, name = 'guard-payment')
    
 ]

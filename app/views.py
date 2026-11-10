@@ -22,16 +22,16 @@ def shift_view(request):
     return render(request, 'shift.html', context)
 
 def edit_shift_view(request, pk):
-    print(pk)
     shift = Shift.objects.get(pk = pk)
     if request.method == "POST":
         form = ShiftForm(request.POST, instance=shift)
         if form.is_valid():
             form.save()
+            return redirect(shift_view)
     else:
         form = ShiftForm(instance = shift)
     context = {'form':form}
-    return render(request,'shift.html', context)
+    return render(request, 'shift.html', context)
 
 def weapon_view(request):
     if request.method == "POST":
@@ -55,6 +55,19 @@ def client_organisation_view(request):
         'organisations':organisations
         }
     return render(request, 'client-organisation.html', context)
+
+def edit_client_organisation_view(request, pk):
+    organisation = ClientOrganisation.objects.get(pk = pk)
+
+    if request.method == "POST":
+        form = ClientOrganisationForm(request.POST, instance = organisation)
+        if form.is_valid():
+            form.save()
+            return redirect(client_organisation_view)
+    else:
+        form = ClientOrganisationForm(instance = organisation)
+    context = {'form':form}
+    return render(request, 'edit-client-organisation.html', context)
 
 def client_payment_view(request):
     if request.method == "POST":

@@ -41,15 +41,15 @@
             {% csrf_token %} {{form|crispy}}
 
             <button class="submit-btn">
-              <span>Submit</span>
+              <span class="submit-btn">Submit</span>
             </button>
           </form>
         </div>
       </div>
     </div>
-
-    
-      </div>
-    </dialog>
   </body>
+  <script>
+    const submitBtn = document.querySelector(".submit-btn");
+    console.log(submitBtn);
+  </script>
 </html>
