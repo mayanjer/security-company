@@ -31,7 +31,7 @@ def edit_shift_view(request, pk):
     else:
         form = ShiftForm(instance = shift)
     context = {'form':form}
-    return render(request,'edit-shift.html', context)
+    return render(request,'shift.html', context)
 
 def weapon_view(request):
     if request.method == "POST":
