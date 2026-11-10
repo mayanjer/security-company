@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import *
 
 # Create your views here.
@@ -20,6 +20,9 @@ def shift_view(request):
     shifts = Shift.objects.all()
     context = {'form':form, 'shifts':shifts}
     return render(request, 'shift.html', context)
+
+def edit_shift_view(request):
+    return redirect(shift_view)
 
 def weapon_view(request):
     if request.method == "POST":
