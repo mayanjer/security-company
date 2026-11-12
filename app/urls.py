@@ -13,6 +13,7 @@ urlpatterns = [
     path('edit_client_payment/<int:pk>', edit_client_payment, name = 'edit-client-payment'),
 
     path('company_branch/', company_branch_view, name = 'company-branch'),
+    path('edit_comapny_branch/<int:pk>', edit_company_branch_view, name = "edit-company-branch"),
     path('deployment/', deployment_view, name = "deployment"),
     path('guard_deployment/', guard_deployment_view, name = 'guard-deployment'),
     path('guard/', guard_view, name = 'guard'),

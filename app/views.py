@@ -107,6 +107,18 @@ def company_branch_view(request):
     context = {'form':form, 'branches':branches}
     return render(request, 'company-branch.html', context)
 
+def edit_company_branch_view(request, pk):
+    branch = CompanyBranch.objects.get(pk = pk)
+    if request.method == "POST":
+        form = CompanyBranchForm(request.POST, instance = branch)
+        if form.is_valid():
+            form.save()
+            return redirect(company_branch_view)
+    else:
+        form = CompanyBranchForm(instance = branch)
+    context = {'form':form}
+    return render(request, 'edit-company-branch.html', context)
+
 def deployment_view(request):
     if request.method == "POST":
         form = DeploymentForm(request.POST)
