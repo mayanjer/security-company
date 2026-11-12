@@ -3,72 +3,155 @@
 {% block title %}Guard Deployments{% endblock %}
 
 {% block content %}
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
-<div class="page-title"><span class="icon-badge bg-label-primary"><i class="bx bx-user-pin"></i></span>
-<div><h4 class="mb-0">Guard Deployments</h4><small class="text-muted">{{ deployments|length }} record{{ deployments|length|pluralize }}</small></div></div>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bx bx-plus me-1"></i>Add Guard Deployment</button>
+<div
+  class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+  <div class="page-title"><span class="icon-badge bg-label-primary"><i
+        class="bx bx-user-pin"></i></span>
+    <div><h4 class="mb-0">Guard Deployments</h4><small class="text-muted">{{
+        deployments|length }} record{{ deployments|length|pluralize
+        }}</small></div></div>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+    data-bs-target="#addModal"><i class="bx bx-plus me-1"></i>Add Guard
+    Deployment</button>
 </div>
 
 <div class="card">
-<div class="card-header d-flex flex-wrap gap-2 align-items-center justify-content-between py-3">
-<h6 class="mb-0">Guard Deployments list</h6>
-<div class="d-flex gap-2">
-<select id="statusFilter" class="form-select form-select-sm" style="width:130px"><option value="">All</option><option value="1">Deployed</option><option value="0">Withdrawn</option></select>
-<div class="input-group input-group-sm" style="width:220px"><span class="input-group-text bg-white"><i class="bx bx-search"></i></span><input type="search" id="tableSearch" class="form-control" placeholder="Search..."></div>
-</div></div>
-<div class="table-responsive">
-<table class="table table-hover mb-0 data-table">
-<thead><tr><th>#</th><th>Guard</th><th>Client</th><th>Branch</th><th>Shift</th><th>Date deployed</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
-<tbody>
-{% for o in deployments %}
-<tr data-active="{{ o.deployment_status|yesno:"1,0" }}">
-<td class="text-muted">{{ forloop.counter }}</td>
-<td><div class="fw-semibold text-body">{{ o.guard.first_name }} {{ o.guard.last_name }}</div><small class="text-muted">{{ o.guard.id_number }}</small></td>
-<td>{{ o.deployment.client_organisation.client_name }}</td>
-<td>{{ o.deployment.branch.branch_name }}</td>
-<td>{{ o.deployment.shift.name }}</td>
-<td>{{ o.date_deployed|date:"d M Y"|default:"-" }}</td>
-<td>{% if o.deployment_status %}<span class="badge bg-label-success">Deployed</span>{% else %}<span class="badge bg-label-danger">Withdrawn</span>{% endif %}</td>
-<td class="text-end text-nowrap">
-<button type="button" class="btn btn-icon btn-sm btn-label-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal" data-url="{% url 'edit-guard-deployment' o.pk %}" data-guard="{{ o.guard_id }}" data-deployment="{{ o.deployment_id }}" data-deployment_status="{{ o.deployment_status|yesno:"1,0" }}"><i class="bi bi-pencil-square"></i></button>
-<button type="button" class="btn btn-icon btn-sm btn-label-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-url="{% url 'delete-guard-deployment' o.pk %}" data-label="guard deployment #{{ o.pk }}"><i class="bi bi-trash3"></i></button>
-</td>
-</tr>
-{% empty %}
-<tr><td colspan="8" class="text-center text-muted py-5"><i class="bx bx-user-pin fs-1 d-block mb-2"></i>No guard deployments yet. Use the Add button to create the first one.</td></tr>
-{% endfor %}
-</tbody>
-</table>
-</div>
+  <div
+    class="card-header d-flex flex-wrap gap-2 align-items-center justify-content-between py-3">
+    <h6 class="mb-0">Guard Deployments list</h6>
+    <div class="d-flex gap-2">
+      <select id="statusFilter" class="form-select form-select-sm"
+        style="width:130px"><option value>All</option><option
+          value="1">Deployed</option><option
+          value="0">Withdrawn</option></select>
+      <div class="input-group input-group-sm" style="width:220px"><span
+          class="input-group-text bg-white"><i
+            class="bx bx-search"></i></span><input type="search"
+          id="tableSearch" class="form-control" placeholder="Search..."></div>
+    </div></div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 data-table">
+      <thead><tr><th>#</th><th>Guard</th><th>Client</th><th>Branch</th><th>Shift</th><th>Date
+            deployed</th><th>Status</th><th
+            class="text-end">Actions</th></tr></thead>
+      <tbody>
+        {% for o in deployments %}
+        <tr data-active="{{ o.deployment_status|yesno:"1,0" }}">
+          <td class="text-muted">{{ forloop.counter }}</td>
+          <td><div class="fw-semibold text-body">{{ o.guard.first_name }} {{
+              o.guard.last_name }}</div><small class="text-muted">{{
+              o.guard.id_number }}</small></td>
+          <td>{{ o.deployment.client_organisation.client_name }}</td>
+          <td>{{ o.deployment.branch.branch_name }}</td>
+          <td>{{ o.deployment.shift.name }}</td>
+          <td>{{ o.date_deployed|date:"d M Y"|default:"-" }}</td>
+          <td>{% if o.deployment_status %}<span
+              class="badge bg-label-success">Deployed</span>{% else %}<span
+              class="badge bg-label-danger">Withdrawn</span>{% endif %}</td>
+          <td class="text-end text-nowrap">
+            <button type="button" class="btn btn-icon btn-sm btn-label-primary"
+              title="Edit" data-bs-toggle="modal" data-bs-target="#editModal"
+              data-url="{% url 'edit-guard-deployment' o.pk %}"
+              data-guard="{{ o.guard_id }}"
+              data-deployment="{{ o.deployment_id }}"
+              data-deployment_status="{{ o.deployment_status|yesno:"1,0" }}"><i
+                class="bi bi-pencil-square"></i></button>
+            <button type="button" class="btn btn-icon btn-sm btn-label-danger"
+              title="Delete" data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              data-url="{% url 'delete-guard-deployment' o.pk %}"
+              data-label="guard deployment #{{ o.pk }}"><i
+                class="bi bi-trash3"></i></button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="8" class="text-center text-muted py-5"><i
+              class="bx bx-user-pin fs-1 d-block mb-2"></i>No guard deployments
+            yet. Use the Add button to create the first one.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endblock %}
 
 {% block modals %}
 <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-<form method="post" action="{% url 'guard-deployment' %}" class="modal-content">
-{% csrf_token %}
-<div class="modal-header"><h5 class="modal-title"><i class="bx bx-plus-circle text-primary me-2"></i>Add Guard Deployment</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-<div class="modal-body"><div class="row g-3">
-<div class="col-md-6"><label class="form-label" for="a_guard">Guard</label><select class="form-select" name="guard" id="a_guard" required><option value="">Select...</option>{% for o in form.guard.field.queryset %}<option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }} - {{ o.id_number }}</option>{% endfor %}</select></div>
-<div class="col-md-6"><label class="form-label" for="a_deployment">Deployment</label><select class="form-select" name="deployment" id="a_deployment" required><option value="">Select...</option>{% for o in form.deployment.field.queryset %}<option value="{{ o.pk }}">#{{ o.pk }} {{ o.client_organisation.client_name }} / {{ o.branch.branch_name }} ({{ o.start_date|date:"d M Y" }})</option>{% endfor %}</select></div>
-<div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" name="deployment_status" id="a_deployment_status" checked><label class="form-check-label" for="a_deployment_status">Currently deployed</label></div></div>
-</div></div>
-<div class="modal-footer"><button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save Guard Deployment</button></div>
-</form></div></div>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+    <form method="post" action="{% url 'guard-deployment' %}"
+      class="modal-content">
+      {% csrf_token %}
+      <div class="modal-header"><h5 class="modal-title"><i
+            class="bx bx-plus-circle text-primary me-2"></i>Add Guard
+          Deployment</h5><button type="button" class="btn-close"
+          data-bs-dismiss="modal" aria-label="Close"></button></div>
+      <div class="modal-body"><div class="row g-3">
+          <div class="col-md-6"><label class="form-label"
+              for="a_guard">Guard</label><select class="form-select"
+              name="guard" id="a_guard" required><option
+                value>Select...</option>
+                {% for o in form.guard.field.queryset%}
+                <option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }}
+                - {{ o.id_number }}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label"
+              for="a_deployment">Deployment</label><select class="form-select"
+              name="deployment" id="a_deployment" required><option
+                value>Select...</option>{% for o in form.deployment.field.queryset %}
+                <option value="{{ o.pk }}">#{{
+                o.pk }} {{ o.client_organisation.client_name }} / {{
+                o.branch.branch_name }} ({{ o.start_date|date:"d M Y"
+                }})</option>
+                {% endfor %}
+              </select></div>
+          <div class="col-12"><div class="form-check form-switch"><input
+                class="form-check-input" type="checkbox" role="switch"
+                name="deployment_status" id="a_deployment_status" checked><label
+                class="form-check-label" for="a_deployment_status">Currently
+                deployed</label></div></div>
+        </div></div>
+      <div class="modal-footer"><button type="button"
+          class="btn btn-label-secondary"
+          data-bs-dismiss="modal">Cancel</button><button type="submit"
+          class="btn btn-primary">Save Guard Deployment</button></div>
+    </form></div></div>
 
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-<form method="post" action="#" class="modal-content">
-{% csrf_token %}
-<div class="modal-header"><h5 class="modal-title"><i class="bx bx-edit text-primary me-2"></i>Edit Guard Deployment</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-<div class="modal-body"><div class="row g-3">
-<div class="col-md-6"><label class="form-label" for="e_guard">Guard</label><select class="form-select" name="guard" id="e_guard" required><option value="">Select...</option>{% for o in form.guard.field.queryset %}<option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }} - {{ o.id_number }}</option>{% endfor %}</select></div>
-<div class="col-md-6"><label class="form-label" for="e_deployment">Deployment</label><select class="form-select" name="deployment" id="e_deployment" required><option value="">Select...</option>{% for o in form.deployment.field.queryset %}<option value="{{ o.pk }}">#{{ o.pk }} {{ o.client_organisation.client_name }} / {{ o.branch.branch_name }} ({{ o.start_date|date:"d M Y" }})</option>{% endfor %}</select></div>
-<div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" name="deployment_status" id="e_deployment_status"><label class="form-check-label" for="e_deployment_status">Currently deployed</label></div></div>
-</div></div>
-<div class="modal-footer"><button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save changes</button></div>
-</form></div></div>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+    <form method="post" action="#" class="modal-content">
+      {% csrf_token %}
+      <div class="modal-header"><h5 class="modal-title"><i
+            class="bx bx-edit text-primary me-2"></i>Edit Guard
+          Deployment</h5><button type="button" class="btn-close"
+          data-bs-dismiss="modal" aria-label="Close"></button></div>
+      <div class="modal-body"><div class="row g-3">
+          <div class="col-md-6"><label class="form-label"
+              for="e_guard">Guard</label><select class="form-select"
+              name="guard" id="e_guard" required><option
+                value>Select...</option>
+                {% for o in form.guard.field.queryset %}
+                <option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }}
+                - {{ o.id_number }}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label"
+              for="e_deployment">Deployment</label><select class="form-select"
+              name="deployment" id="e_deployment" required><option
+                value>Select...</option>{% for o in form.deployment.field.queryset %}
+                <option value="{{ o.pk }}">#{{
+                o.pk }} {{ o.client_organisation.client_name }} / {{
+                o.branch.branch_name }} ({{ o.start_date|date:"d M Y"
+                }})</option>{% endfor %}</select></div>
+          <div class="col-12"><div class="form-check form-switch"><input
+                class="form-check-input" type="checkbox" role="switch"
+                name="deployment_status" id="e_deployment_status"><label
+                class="form-check-label" for="e_deployment_status">Currently
+                deployed</label></div></div>
+        </div></div>
+      <div class="modal-footer"><button type="button"
+          class="btn btn-label-secondary"
+          data-bs-dismiss="modal">Cancel</button><button type="submit"
+          class="btn btn-primary">Save changes</button></div>
+    </form></div></div>
 {% endblock %}
 
 {% block extra_js %}

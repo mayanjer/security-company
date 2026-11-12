@@ -82,14 +82,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 var n = function (v) { return Number(v) || 0; };
-var payable = n({{ total_client_payable|default:0|unlocalize }}), paid = n({{ total_client_paid|default:0|unlocalize }}), gpaid = n({{ total_guard_paid|default:0|unlocalize }});
+var payable = n('{{ total_client_payable|default:0|unlocalize }}'), paid = n('{{ total_client_paid|default:0|unlocalize }}'), gpaid = n('{{ total_guard_paid|default:0|unlocalize }}');
 var opts = { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#eceef1' } }, x: { grid: { display: false } } } };
 new Chart(document.getElementById('deployChart'), { type: 'bar', options: opts, data: { labels: ['Guards deployed', 'Active deployments', 'Branches', 'Shifts'],
-  datasets: [{ data: [n({{ deployed_guards_count }}), n({{ active_deployments }}), n({{ active_branches }}), n({{ active_shifts }})], backgroundColor: ['#696CFF', '#71dd37', '#ffab00', '#03c3ec'], borderRadius: 6 }] } });
+  datasets: [{ data: [n('{{ deployed_guards_count|unlocalize }}'), n('{{ active_deployments|unlocalize }}'), n('{{ active_branches|unlocalize }}'), n('{{ active_shifts|unlocalize }}')], backgroundColor: ['#696CFF', '#71dd37', '#ffab00', '#03c3ec'], borderRadius: 6 }] } });
 new Chart(document.getElementById('financeChart'), { type: 'bar', options: opts, data: { labels: ['Payable', 'Client paid', 'Guards paid'],
   datasets: [{ data: [payable, paid, gpaid], backgroundColor: ['#e7e7ff', '#696CFF', '#ffab00'], borderRadius: 6 }] } });
 new Chart(document.getElementById('weaponChart'), { type: 'doughnut', options: { cutout: '70%', plugins: { legend: { display: false } } },
-  data: { labels: ['Assigned', 'Available'], datasets: [{ data: [n({{ assigned_weapons }}), n({{ available_weapons }})], backgroundColor: ['#696CFF', '#71dd37'], borderWidth: 0 }] } });
+  data: { labels: ['Assigned', 'Available'], datasets: [{ data: [n('{{ assigned_weapons|unlocalize }}'), n('{{ available_weapons|unlocalize }}')], backgroundColor: ['#696CFF', '#71dd37'], borderWidth: 0 }] } });
 var rate = payable ? Math.min(100, Math.round(paid / payable * 100)) : 0;
 document.getElementById('rateTxt').textContent = rate + '%';
 document.getElementById('rateBar').style.width = rate + '%';

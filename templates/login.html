@@ -3,21 +3,32 @@
 
 {% block content %}
 <div class="auth-wrap"><div class="auth-card" style="max-width:420px">
-<div class="text-center mb-4"><a class="brand" href="{% url 'index' %}"><i class="bx bxs-shield-alt-2"></i><span>GuardOps</span></a></div>
-<div class="card"><div class="card-body p-4 p-sm-5">
-<h4 class="mb-1">Welcome back</h4>
-<p class="text-muted mb-4">Log in to manage guards, deployments and payments.</p>
-{% for m in messages %}<div class="alert alert-{% if m.tags == 'error' %}danger{% else %}{{ m.tags|default:"info" }}{% endif %} py-2 small">{{ m }}</div>{% endfor %}
-{% if form.errors %}<div class="alert alert-danger py-2 small"><ul class="mb-0 ps-3">{% for f in form %}{% for e in f.errors %}<li>{{ f.label }}: {{ e }}</li>{% endfor %}{% endfor %}{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% endif %}
-<form method="post" action="{% url 'login' %}" novalidate>
-{% csrf_token %}
-{{form.as_p}}
-<button type="submit" class="btn btn-primary w-100">Log in</button>
-</form>
-<p class="text-center mt-4 mb-0">New to GuardOps? <a href="{% url 'signup' %}">Create an account</a></p>
-</div></div>
-<p class="text-center mt-3 small"><a href="{% url 'index' %}" class="text-muted text-decoration-none"><i class="bx bx-arrow-back me-1"></i>Back to home</a></p>
-</div></div>
+    <div class="text-center mb-4"><a class="brand" href="{% url 'index' %}"><i
+          class="bx bxs-shield-alt-2"></i><span>GuardOps</span></a></div>
+    <div class="card"><div class="card-body p-4 p-sm-5">
+        <h4 class="mb-1">Welcome back</h4>
+        <p class="text-muted mb-4">Log in to manage guards, deployments and
+          payments.</p>
+        {% for m in messages %}<div
+          class="alert alert-{% if m.tags == 'error' %}danger{% else %}{{ m.tags|default:"info"
+          }}{% endif %} py-2 small">{{ m }}</div>{% endfor %}
+        {% if form.errors %}<div class="alert alert-danger py-2 small"><ul
+            class="mb-0 ps-3">{% for f in form %}{% for e in f.errors %}<li>{{
+              f.label }}: {{ e }}</li>{% endfor %}{% endfor %}{% for e in form.non_field_errors %}<li>{{ e }}</li>
+            {% endfor %}
+          </ul></div>{% endif %}
+        <form method="post" action="{% url 'login' %}" novalidate>
+          {% csrf_token %}
+          {{form.as_p}}
+          <button type="submit" class="btn btn-primary w-100">Log in</button>
+        </form>
+        <p class="text-center mt-4 mb-0">New to GuardOps? <a
+            href="{% url 'signup' %}">Create an account</a></p>
+      </div></div>
+    <p class="text-center mt-3 small"><a href="{% url 'index' %}"
+        class="text-muted text-decoration-none"><i
+          class="bx bx-arrow-back me-1"></i>Back to home</a></p>
+  </div></div>
 {% endblock %}
 
 {% block extra_js %}

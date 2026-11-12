@@ -3,72 +3,131 @@
 {% block title %}Shifts{% endblock %}
 
 {% block content %}
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
-<div class="page-title"><span class="icon-badge bg-label-primary"><i class="bx bx-time-five"></i></span>
-<div><h4 class="mb-0">Shifts</h4><small class="text-muted">{{ shifts|length }} record{{ shifts|length|pluralize }}</small></div></div>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bx bx-plus me-1"></i>Add Shift</button>
+<div
+  class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+  <div class="page-title"><span class="icon-badge bg-label-primary"><i
+        class="bx bx-time-five"></i></span>
+    <div><h4 class="mb-0">Shifts</h4><small class="text-muted">{{ shifts|length
+        }} record{{ shifts|length|pluralize }}</small></div></div>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+    data-bs-target="#addModal"><i class="bx bx-plus me-1"></i>Add Shift</button>
 </div>
 
 <div class="card">
-<div class="card-header d-flex flex-wrap gap-2 align-items-center justify-content-between py-3">
-<h6 class="mb-0">Shifts list</h6>
-<div class="d-flex gap-2">
-<select id="statusFilter" class="form-select form-select-sm" style="width:130px"><option value="">All</option><option value="1">Active</option><option value="0">Inactive</option></select>
-<div class="input-group input-group-sm" style="width:220px"><span class="input-group-text bg-white"><i class="bx bx-search"></i></span><input type="search" id="tableSearch" class="form-control" placeholder="Search..."></div>
-</div></div>
-<div class="table-responsive">
-<table class="table table-hover mb-0 data-table">
-<thead><tr><th>#</th><th>Shift</th><th>Start time</th><th>End time</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
-<tbody>
-{% for o in shifts %}
-<tr data-active="{{ o.status|yesno:"1,0" }}">
-<td class="text-muted">{{ forloop.counter }}</td>
-<td><span class="fw-semibold text-body">{{ o.name }}</span></td>
-<td>{{ o.start_time|time:"h:i A" }}</td>
-<td>{{ o.end_time|time:"h:i A" }}</td>
-<td>{% if o.status %}<span class="badge bg-label-success">Active</span>{% else %}<span class="badge bg-label-danger">Inactive</span>{% endif %}</td>
-<td class="text-end text-nowrap">
-<button type="button" class="btn btn-icon btn-sm btn-label-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal" data-url="{% url 'edit-shift' o.pk %}" data-name="{{ o.name }}" data-start_time="{{ o.start_time|time:"H:i" }}" data-end_time="{{ o.end_time|time:"H:i" }}" data-status="{{ o.status|yesno:"1,0" }}"><i class="bi bi-pencil-square"></i></button>
-<button type="button" class="btn btn-icon btn-sm btn-label-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-url="{% url 'delete-shift' o.pk %}" data-label="{{ o.name }}"><i class="bi bi-trash3"></i></button>
-</td>
-</tr>
-{% empty %}
-<tr><td colspan="6" class="text-center text-muted py-5"><i class="bx bx-time-five fs-1 d-block mb-2"></i>No shifts yet. Use the Add button to create the first one.</td></tr>
-{% endfor %}
-</tbody>
-</table>
-</div>
+  <div
+    class="card-header d-flex flex-wrap gap-2 align-items-center justify-content-between py-3">
+    <h6 class="mb-0">Shifts list</h6>
+    <div class="d-flex gap-2">
+      <select id="statusFilter" class="form-select form-select-sm"
+        style="width:130px"><option value>All</option><option
+          value="1">Active</option><option value="0">Inactive</option></select>
+      <div class="input-group input-group-sm" style="width:220px"><span
+          class="input-group-text bg-white"><i
+            class="bx bx-search"></i></span><input type="search"
+          id="tableSearch" class="form-control" placeholder="Search..."></div>
+    </div></div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 data-table">
+      <thead><tr><th>#</th><th>Shift</th><th>Start time</th><th>End
+            time</th><th>Status</th><th
+            class="text-end">Actions</th></tr></thead>
+      <tbody>
+        {% for o in shifts %}
+        <tr data-active="{{ o.status|yesno:"1,0" }}">
+          <td class="text-muted">{{ forloop.counter }}</td>
+          <td><span class="fw-semibold text-body">{{ o.name }}</span></td>
+          <td>{{ o.start_time|time:"h:i A" }}</td>
+          <td>{{ o.end_time|time:"h:i A" }}</td>
+          <td>{% if o.status %}<span
+              class="badge bg-label-success">Active</span>{% else %}<span
+              class="badge bg-label-danger">Inactive</span>{% endif %}</td>
+          <td class="text-end text-nowrap">
+            <button type="button" class="btn btn-icon btn-sm btn-label-primary"
+              title="Edit" data-bs-toggle="modal" data-bs-target="#editModal"
+              data-url="{% url 'edit-shift' o.pk %}" data-name="{{ o.name }}"
+              data-start_time="{{ o.start_time|time:"H:i" }}"
+              data-end_time="{{ o.end_time|time:"H:i" }}"
+              data-status="{{ o.status|yesno:"1,0" }}"><i
+                class="bi bi-pencil-square"></i></button>
+            <button type="button" class="btn btn-icon btn-sm btn-label-danger"
+              title="Delete" data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              data-url="{% url 'delete-shift' o.pk %}"
+              data-label="{{ o.name }}"><i class="bi bi-trash3"></i></button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center text-muted py-5"><i
+              class="bx bx-time-five fs-1 d-block mb-2"></i>No shifts yet. Use
+            the Add button to create the first one.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endblock %}
 
 {% block modals %}
 <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-<form method="post" action="{% url 'shift' %}" class="modal-content">
-{% csrf_token %}
-<div class="modal-header"><h5 class="modal-title"><i class="bx bx-plus-circle text-primary me-2"></i>Add Shift</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-<div class="modal-body"><div class="row g-3">
-<div class="col-md-6"><label class="form-label" for="a_name">Shift name</label><input class="form-control" type="text" name="name" id="a_name" maxlength="100" required></div>
-<div class="col-md-6"><label class="form-label" for="a_start_time">Start time</label><input class="form-control" type="time" name="start_time" id="a_start_time" required></div>
-<div class="col-md-6"><label class="form-label" for="a_end_time">End time</label><input class="form-control" type="time" name="end_time" id="a_end_time" required></div>
-<div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" name="status" id="a_status" checked><label class="form-check-label" for="a_status">Active</label></div></div>
-</div></div>
-<div class="modal-footer"><button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save Shift</button></div>
-</form></div></div>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+    <form method="post" action="{% url 'shift' %}" class="modal-content">
+      {% csrf_token %}
+      <div class="modal-header"><h5 class="modal-title"><i
+            class="bx bx-plus-circle text-primary me-2"></i>Add
+          Shift</h5><button type="button" class="btn-close"
+          data-bs-dismiss="modal" aria-label="Close"></button></div>
+      <div class="modal-body"><div class="row g-3">
+          <div class="col-md-6"><label class="form-label" for="a_name">Shift
+              name</label><input class="form-control" type="text" name="name"
+              id="a_name" maxlength="100" required></div>
+          <div class="col-md-6"><label class="form-label"
+              for="a_start_time">Start time</label><input class="form-control"
+              type="time" name="start_time" id="a_start_time" required></div>
+          <div class="col-md-6"><label class="form-label" for="a_end_time">End
+              time</label><input class="form-control" type="time"
+              name="end_time" id="a_end_time" required></div>
+          <div class="col-12"><div class="form-check form-switch"><input
+                class="form-check-input" type="checkbox" role="switch"
+                name="status" id="a_status" checked><label
+                class="form-check-label"
+                for="a_status">Active</label></div></div>
+        </div></div>
+      <div class="modal-footer"><button type="button"
+          class="btn btn-label-secondary"
+          data-bs-dismiss="modal">Cancel</button><button type="submit"
+          class="btn btn-primary">Save Shift</button></div>
+    </form></div></div>
 
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-<form method="post" action="#" class="modal-content">
-{% csrf_token %}
-<div class="modal-header"><h5 class="modal-title"><i class="bx bx-edit text-primary me-2"></i>Edit Shift</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-<div class="modal-body"><div class="row g-3">
-<div class="col-md-6"><label class="form-label" for="e_name">Shift name</label><input class="form-control" type="text" name="name" id="e_name" maxlength="100" required></div>
-<div class="col-md-6"><label class="form-label" for="e_start_time">Start time</label><input class="form-control" type="time" name="start_time" id="e_start_time" required></div>
-<div class="col-md-6"><label class="form-label" for="e_end_time">End time</label><input class="form-control" type="time" name="end_time" id="e_end_time" required></div>
-<div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" name="status" id="e_status"><label class="form-check-label" for="e_status">Active</label></div></div>
-</div></div>
-<div class="modal-footer"><button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save changes</button></div>
-</form></div></div>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+    <form method="post" action="#" class="modal-content">
+      {% csrf_token %}
+      <div class="modal-header"><h5 class="modal-title"><i
+            class="bx bx-edit text-primary me-2"></i>Edit Shift</h5><button
+          type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button></div>
+      <div class="modal-body"><div class="row g-3">
+          <div class="col-md-6"><label class="form-label" for="e_name">Shift
+              name</label><input class="form-control" type="text" name="name"
+              id="e_name" maxlength="100" required></div>
+          <div class="col-md-6"><label class="form-label"
+              for="e_start_time">Start time</label><input class="form-control"
+              type="time" name="start_time" id="e_start_time" required></div>
+          <div class="col-md-6"><label class="form-label" for="e_end_time">End
+              time</label><input class="form-control" type="time"
+              name="end_time" id="e_end_time" required></div>
+          <div class="col-12"><div class="form-check form-switch"><input
+                class="form-check-input" type="checkbox" role="switch"
+                name="status" id="e_status"><label class="form-check-label"
+                for="e_status">Active</label></div></div>
+        </div></div>
+      <div class="modal-footer"><button type="button"
+          class="btn btn-label-secondary"
+          data-bs-dismiss="modal">Cancel</button><button type="submit"
+          class="btn btn-primary">Save changes</button></div>
+    </form></div></div>
 {% endblock %}
 
 {% block extra_js %}
