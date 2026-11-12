@@ -10,6 +10,8 @@ urlpatterns = [
     path('edit-client-organisation/<int:pk>', edit_client_organisation_view, name = "edit-client-organisation"),
 
     path('client_payment/', client_payment_view, name = "client-payment"),
+    path('edit_client_payment/<int:pk>', edit_client_payment, name = 'edit-client-payment'),
+
     path('company_branch/', company_branch_view, name = 'company-branch'),
     path('deployment/', deployment_view, name = "deployment"),
     path('guard_deployment/', guard_deployment_view, name = 'guard-deployment'),

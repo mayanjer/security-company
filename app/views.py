@@ -43,6 +43,9 @@ def weapon_view(request):
     context = {'form':form, 'weapons':weapons}
     return render(request, 'weapon.html', context)
 
+def edit_weapon_view(request, pk):
+    return render(request, 'edit', context)
+
 def client_organisation_view(request):
     if request.method == "POST":
         form = ClientOrganisationForm(request.POST)
@@ -80,6 +83,19 @@ def client_payment_view(request):
     context = {'form':form,
                'payments':payments}
     return render(request, 'client-payment.html', context)
+
+def edit_client_payment(request, pk):
+    payment = ClientPayment.objects.get(pk=pk)
+    if request.method == "POST":
+        form = ClientPaymentForm(request.POST, instance = payment)
+        if form.is_valid():
+            form.save()
+            return redirect(client_payment_view)
+
+    else:
+        form = ClientPaymentForm(instance = payment)
+    context = {'form':form}
+    return render(request, 'edit-client-payment.html', context)
 
 def company_branch_view(request):
     if request.method == "POST":
