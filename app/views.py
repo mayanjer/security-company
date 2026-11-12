@@ -152,6 +152,19 @@ def guard_deployment_view(request):
     context = {'form':form, 'deployments':deployments}
     return render(request, 'guard-deployment.html', context)
 
+def edit_guard_deployment_view(request, pk):
+    deployment = GuardDeployment.objects.get(pk = pk)
+    if request.method == "POST":
+        form = GuardDeploymentForm(request.POST, instance = deployment)
+        if form.is_valid():
+            form.save()
+            return redirect(guard_deployment_view)
+    else:
+        form = GuardDeploymentForm(instance = deployment)
+
+    context = {'form':form}
+    return render(request, 'edit-guard-deployment.html', context)
+
 def guard_view(request):
     if request.method == "POST":
         form = GuardForm(request.POST)
