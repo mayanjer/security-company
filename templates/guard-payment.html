@@ -1,75 +1,85 @@
-{% load static %} {% load crispy_forms_tags %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/general.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-  </head>
-  <body>
-    <header>
-      <div class="nav-container">
-        <div class="logo">Lubuya Security</div>
-        <ul class="nav-links">
-          <li><a href="{% url 'index' %}">Home</a></li>
-          <li>
-            <a href="{% url 'client-organisation' %}">Client Organisation</a>
-          </li>
-          <li><a href="{% url 'company-branch' %}">Company Branch</a></li>
-          <li><a href="{% url 'guard' %}">Guard</a></li>
-          <li><a href="{% url 'weapon' %}">Weapon</a></li>
-          <li><a href="{% url 'shift' %}">Shift</a></li>
-          <li><a href="{% url 'client-payment' %}">Client Payment</a></li>
-          <li><a href="{% url 'deployment' %}">Deployment</a></li>
-          <li><a href="{% url 'guard-deployment' %}">Guard Deployment</a></li>
-          <li><a href="{% url 'guard-payment' %}">Guard Payment</a></li>
-          <li><a href="{% url 'weapon-assignment' %}">Weapon Assignment</a></li>
-        </ul>
-      </div>
-    </header>
-    <div class="form-container">
-      <div class="form-panel">
-        <div class="form-wrapper">
-          <div class="form-header">
-            <h2>Manage Guard Payments</h2>
-            <p>Enter your Guard Payment Details</p>
-          </div>
+{% extends 'base.html' %}
+{% load l10n %}
+{% block title %}Guard Payments{% endblock %}
 
-          <form class="form" method="post">
-            {% csrf_token %} {{form|crispy}}
-            <button class="submit-btn">
-              <span>Submit</span>
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <table>
-      <tr>
-        <th>Guard Name</th>
-        <th>Amount Paid</th>
-        <th>Balance</th>
-        <th>Payment Method</th>
-        <th>Payment Date</th>
-        <th>Month</th>
-        <th>Year</th>
-      </tr>
-      {% for payment in payments %}
-      <tr>
-        <td>{{payment.guard}}</td>
-        <td>{{payment.amount_paid}}</td>
-        <td></td>
-        <td>{{payment.payment_method}}</td>
-        <td>{{payment.date_paid}}</td>
-        <td>{{payment.month}}</td>
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+<div class="page-title"><span class="icon-badge bg-label-primary"><i class="bx bx-wallet"></i></span>
+<div><h4 class="mb-0">Guard Payments</h4><small class="text-muted">{{ payments|length }} record{{ payments|length|pluralize }}</small></div></div>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bx bx-plus me-1"></i>Add Guard Payment</button>
+</div>
 
-        <td>{{payment.year}}</td>
-        <td><a href="{% url 'edit-guard-payment' payment.id %}">Edit</a> | <a href="{% url 'delete-guard-payment' payment.id %}">Delete</a></td>
-      </tr>
-      {% endfor %}
-    
-    </table>
-  </body>
-</html>
+<div class="card">
+<div class="card-header d-flex flex-wrap gap-2 align-items-center justify-content-between py-3">
+<h6 class="mb-0">Guard Payments list</h6>
+<div class="d-flex gap-2">
+
+<div class="input-group input-group-sm" style="width:220px"><span class="input-group-text bg-white"><i class="bx bx-search"></i></span><input type="search" id="tableSearch" class="form-control" placeholder="Search..."></div>
+</div></div>
+<div class="table-responsive">
+<table class="table table-hover mb-0 data-table">
+<thead><tr><th>#</th><th>Guard</th><th>Amount paid</th><th>Date paid</th><th>Method</th><th>Period</th><th class="text-end">Actions</th></tr></thead>
+<tbody>
+{% for o in payments %}
+<tr data-active="1">
+<td class="text-muted">{{ forloop.counter }}</td>
+<td><span class="fw-semibold text-body">{{ o.guard.first_name }} {{ o.guard.last_name }}</span></td>
+<td>{{ o.amount_paid|floatformat:"2g" }}</td>
+<td>{{ o.date_paid|date:"d M Y"|default:"-" }}</td>
+<td><span class="badge bg-label-primary">{{ o.payment_method }}</span></td>
+<td>{{ o.month }} {{ o.year }}</td>
+<td class="text-end text-nowrap">
+<button type="button" class="btn btn-icon btn-sm btn-label-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal" data-url="{% url 'edit-guard-payment' o.pk %}" data-guard="{{ o.guard_id }}" data-amount_paid="{{ o.amount_paid|unlocalize }}" data-date_paid="{{ o.date_paid|date:"Y-m-d" }}" data-payment_method="{{ o.payment_method }}" data-month="{{ o.month }}" data-year="{{ o.year }}"><i class="bi bi-pencil-square"></i></button>
+<button type="button" class="btn btn-icon btn-sm btn-label-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-url="{% url 'delete-guard_payment' o.pk %}" data-label="payment #{{ o.pk }}"><i class="bi bi-trash3"></i></button>
+</td>
+</tr>
+{% empty %}
+<tr><td colspan="7" class="text-center text-muted py-5"><i class="bx bx-wallet fs-1 d-block mb-2"></i>No guard payments yet. Use the Add button to create the first one.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+<form method="post" action="{% url 'guard-payment' %}" class="modal-content">
+{% csrf_token %}
+<div class="modal-header"><h5 class="modal-title"><i class="bx bx-plus-circle text-primary me-2"></i>Add Guard Payment</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+<div class="modal-body"><div class="row g-3">
+<div class="col-md-6"><label class="form-label" for="a_guard">Guard</label><select class="form-select" name="guard" id="a_guard" required><option value="">Select...</option>{% for o in form.guard.field.queryset %}<option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }} - {{ o.id_number }}</option>{% endfor %}</select></div>
+<div class="col-md-6"><label class="form-label" for="a_amount_paid">Amount paid</label><input class="form-control" type="number" name="amount_paid" id="a_amount_paid" step="0.01" min="0" required></div>
+<div class="col-md-6"><label class="form-label" for="a_date_paid">Date paid</label><input class="form-control" type="date" name="date_paid" id="a_date_paid" required></div>
+<div class="col-md-6"><label class="form-label" for="a_payment_method">Payment method</label><input class="form-control" list="a_payment_methoddl" name="payment_method" id="a_payment_method" maxlength="50" required><datalist id="a_payment_methoddl"><option value="Cash"><option value="Mobile Money"><option value="Bank Transfer"><option value="Cheque"><option value="Card"></datalist></div>
+<div class="col-md-6"><label class="form-label" for="a_month">Month</label><select class="form-select" name="month" id="a_month" required><option value="">Select month...</option><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+<div class="col-md-6"><label class="form-label" for="a_year">Year</label><input class="form-control" type="text" name="year" id="a_year" maxlength="4" pattern="[0-9]{4}" placeholder="e.g. 2026" required></div>
+</div></div>
+<div class="modal-footer"><button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save Guard Payment</button></div>
+</form></div></div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+<form method="post" action="#" class="modal-content">
+{% csrf_token %}
+<div class="modal-header"><h5 class="modal-title"><i class="bx bx-edit text-primary me-2"></i>Edit Guard Payment</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+<div class="modal-body"><div class="row g-3">
+<div class="col-md-6"><label class="form-label" for="e_guard">Guard</label><select class="form-select" name="guard" id="e_guard" required><option value="">Select...</option>{% for o in form.guard.field.queryset %}<option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }} - {{ o.id_number }}</option>{% endfor %}</select></div>
+<div class="col-md-6"><label class="form-label" for="e_amount_paid">Amount paid</label><input class="form-control" type="number" name="amount_paid" id="e_amount_paid" step="0.01" min="0" required></div>
+<div class="col-md-6"><label class="form-label" for="e_date_paid">Date paid</label><input class="form-control" type="date" name="date_paid" id="e_date_paid" required></div>
+<div class="col-md-6"><label class="form-label" for="e_payment_method">Payment method</label><input class="form-control" list="e_payment_methoddl" name="payment_method" id="e_payment_method" maxlength="50" required><datalist id="e_payment_methoddl"><option value="Cash"><option value="Mobile Money"><option value="Bank Transfer"><option value="Cheque"><option value="Card"></datalist></div>
+<div class="col-md-6"><label class="form-label" for="e_month">Month</label><select class="form-select" name="month" id="e_month" required><option value="">Select month...</option><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+<div class="col-md-6"><label class="form-label" for="e_year">Year</label><input class="form-control" type="text" name="year" id="e_year" maxlength="4" pattern="[0-9]{4}" placeholder="e.g. 2026" required></div>
+</div></div>
+<div class="modal-footer"><button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save changes</button></div>
+</form></div></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('addModal').addEventListener('shown.bs.modal', function () {
+  var f = this.querySelector('input:not([type=hidden]), select'); if (f) f.focus();
+});
+</script>
+{% endblock %}

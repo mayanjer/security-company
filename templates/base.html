@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Dashboard{% endblock %} | GuardOps</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f4f5fa;
+        --pri: #696cff;
+        --pri2: #7367f0;
+        --sh: 0 2px 6px rgba(67, 89, 113, 0.12);
+        --bs-body-bg: #f4f5fa;
+        --bs-body-color: #566a7f;
+        --bs-primary: #696cff;
+        --bs-primary-rgb: 105, 108, 255;
+        --bs-link-color: #696cff;
+        --bs-border-radius: 0.5rem;
+        --bs-body-font-family: "Public Sans", system-ui, sans-serif;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        color: #384551;
+        font-weight: 600;
+      }
+      .btn-primary {
+        --bs-btn-bg: #696cff;
+        --bs-btn-border-color: #696cff;
+        --bs-btn-hover-bg: #5f61e6;
+        --bs-btn-hover-border-color: #5f61e6;
+        --bs-btn-active-bg: #5456cc;
+        --bs-btn-active-border-color: #5456cc;
+        --bs-btn-disabled-bg: #696cff;
+        --bs-btn-disabled-border-color: #696cff;
+        box-shadow: 0 2px 4px rgba(105, 108, 255, 0.4);
+      }
+      .form-control:focus,
+      .form-select:focus,
+      .form-check-input:focus {
+        border-color: #696cff;
+        box-shadow: 0 0 0 0.2rem rgba(105, 108, 255, 0.2);
+      }
+      .form-check-input:checked {
+        background-color: #696cff;
+        border-color: #696cff;
+      }
+      .card {
+        border: 0;
+        border-radius: 0.5rem;
+        box-shadow: var(--sh);
+      }
+      .card-header {
+        background: #fff;
+        border-bottom: 1px solid #eceef1;
+      }
+      .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 260px;
+        background: #fff;
+        box-shadow: 0 0 0.375rem rgba(67, 89, 113, 0.15);
+        z-index: 1030;
+        overflow-y: auto;
+        padding: 0 0.9rem 1rem;
+        transition: transform 0.25s;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 1.4rem 0.6rem;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #384551;
+        text-decoration: none;
+      }
+      .brand i {
+        font-size: 1.9rem;
+        color: var(--pri);
+      }
+      .nav-heading {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #a1acb8;
+        margin: 1.1rem 0.6rem 0.4rem;
+      }
+      .sidebar .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #697a8d;
+        padding: 0.55rem 0.8rem;
+        border-radius: 0.4rem;
+        margin-bottom: 0.15rem;
+        font-size: 0.94rem;
+      }
+      .sidebar .nav-link i {
+        font-size: 1.25rem;
+      }
+      .sidebar .nav-link:hover {
+        background: #f0f1ff;
+        color: var(--pri);
+      }
+      .sidebar .nav-link.active {
+        background: linear-gradient(
+          72deg,
+          #7367f0 22%,
+          rgba(115, 103, 240, 0.7) 76%
+        );
+        color: #fff;
+        box-shadow: 0 2px 6px rgba(115, 103, 240, 0.48);
+      }
+      .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(67, 89, 113, 0.5);
+        z-index: 1025;
+      }
+      .overlay.show {
+        display: block;
+      }
+      .main {
+        margin-left: 260px;
+        padding: 0 1.5rem 1.5rem;
+      }
+      .topbar {
+        position: sticky;
+        top: 0.75rem;
+        z-index: 1020;
+        margin-top: 0.75rem;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(6px);
+        border-radius: 0.5rem;
+        box-shadow: var(--sh);
+        padding: 0.55rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .topbar .search {
+        position: relative;
+        flex: 1;
+        max-width: 380px;
+      }
+      .topbar .search i {
+        position: absolute;
+        left: 0.7rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #a1acb8;
+      }
+      .topbar .search input {
+        border: 0;
+        background: transparent;
+        padding-left: 2.2rem;
+        box-shadow: none;
+      }
+      .avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #e7e7ff;
+        color: var(--pri);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+      }
+      .icon-badge {
+        width: 42px;
+        height: 42px;
+        border-radius: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        flex-shrink: 0;
+      }
+      .bg-label-primary {
+        background: #e7e7ff !important;
+        color: #696cff !important;
+      }
+      .bg-label-success {
+        background: #e8fadf !important;
+        color: #71dd37 !important;
+      }
+      .bg-label-danger {
+        background: #ffe0db !important;
+        color: #ff3e1d !important;
+      }
+      .bg-label-warning {
+        background: #fff2d6 !important;
+        color: #ffab00 !important;
+      }
+      .bg-label-info {
+        background: #d7f5fc !important;
+        color: #03c3ec !important;
+      }
+      .bg-label-secondary {
+        background: #ebeef0 !important;
+        color: #8592a3 !important;
+      }
+      .btn-label-primary {
+        background: #e7e7ff;
+        color: #696cff;
+        border: 0;
+      }
+      .btn-label-primary:hover {
+        background: #696cff;
+        color: #fff;
+      }
+      .btn-label-danger {
+        background: #ffe0db;
+        color: #ff3e1d;
+        border: 0;
+      }
+      .btn-label-danger:hover {
+        background: #ff3e1d;
+        color: #fff;
+      }
+      .btn-label-secondary {
+        background: #ebeef0;
+        color: #8592a3;
+        border: 0;
+      }
+      .btn-icon {
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .table > :not(caption) > * > * {
+        padding: 0.8rem 1rem;
+        vertical-align: middle;
+      }
+      .table thead th {
+        background: #f5f5f9;
+        color: #566a7f;
+        font-size: 0.78rem;
+        font-weight: 600;
+        white-space: nowrap;
+        border-bottom: 0;
+      }
+      .table-hover tbody tr:hover {
+        background: #fafaff;
+      }
+      .page-title {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+      }
+      .kpi-big {
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: #384551;
+      }
+      .hero-icon {
+        font-size: 5.5rem;
+        color: var(--pri);
+        opacity: 0.18;
+        position: absolute;
+        right: 0.6rem;
+        bottom: -0.4rem;
+      }
+      @media (max-width: 991.98px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.show {
+          transform: none;
+        }
+        .main {
+          margin-left: 0;
+          padding: 0 0.75rem 1rem;
+        }
+      }
+    </style>
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    {% with u=request.resolver_match.url_name %}
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="{% url 'dashboard' %}"
+        ><i class="bx bxs-shield-alt-2"></i><span>GuardOps</span></a
+      >
+      <div class="nav-heading">Overview</div>
+      <a
+        class="nav-link{% if u == 'dashboard' %} active{% endif %}"
+        href="{% url 'dashboard' %}"
+        ><i class="bx bx-home-smile"></i><span>Dashboard</span></a
+      >
+      <div class="nav-heading">Organisation</div>
+      <a
+        class="nav-link{% if u == 'client-organisation' %} active{% endif %}"
+        href="{% url 'client-organisation' %}"
+        ><i class="bx bx-buildings"></i><span>Client Organisations</span></a
+      >
+      <a
+        class="nav-link{% if u == 'company-branch' %} active{% endif %}"
+        href="{% url 'company-branch' %}"
+        ><i class="bx bx-git-branch"></i><span>Company Branches</span></a
+      >
+      <div class="nav-heading">Personnel</div>
+      <a
+        class="nav-link{% if u == 'guard' %} active{% endif %}"
+        href="{% url 'guard' %}"
+        ><i class="bx bx-shield-quarter"></i><span>Guards</span></a
+      >
+      <a
+        class="nav-link{% if u == 'shift' %} active{% endif %}"
+        href="{% url 'shift' %}"
+        ><i class="bx bx-time-five"></i><span>Shifts</span></a
+      >
+      <div class="nav-heading">Operations</div>
+      <a
+        class="nav-link{% if u == 'deployment' %} active{% endif %}"
+        href="{% url 'deployment' %}"
+        ><i class="bx bx-map-pin"></i><span>Deployments</span></a
+      >
+      <a
+        class="nav-link{% if u == 'guard-deployment' %} active{% endif %}"
+        href="{% url 'guard-deployment' %}"
+        ><i class="bx bx-user-pin"></i><span>Guard Deployments</span></a
+      >
+      <a
+        class="nav-link{% if u == 'weapon' %} active{% endif %}"
+        href="{% url 'weapon' %}"
+        ><i class="bx bx-target-lock"></i><span>Weapons</span></a
+      >
+      <a
+        class="nav-link{% if u == 'weapon-assignment' %} active{% endif %}"
+        href="{% url 'weapon-assignment' %}"
+        ><i class="bx bx-link"></i><span>Weapon Assignments</span></a
+      >
+      <div class="nav-heading">Finance</div>
+      <a
+        class="nav-link{% if u == 'client-payment' %} active{% endif %}"
+        href="{% url 'client-payment' %}"
+        ><i class="bx bx-money"></i><span>Client Payments</span></a
+      >
+      <a
+        class="nav-link{% if u == 'guard-payment' %} active{% endif %}"
+        href="{% url 'guard-payment' %}"
+        ><i class="bx bx-wallet"></i><span>Guard Payments</span></a
+      >
+    </aside>
+    {% endwith %}
+    <div class="overlay" id="overlay"></div>
+    <div class="main">
+      <header class="topbar">
+        <button
+          class="btn btn-icon btn-label-secondary d-lg-none"
+          id="menuBtn"
+          type="button"
+          aria-label="Open menu"
+        >
+          <i class="bx bx-menu fs-4"></i>
+        </button>
+        <div class="search">
+          <i class="bx bx-search fs-5"></i
+          ><input
+            type="search"
+            id="globalSearch"
+            class="form-control"
+            placeholder="Search records on this page..."
+          />
+        </div>
+        <div class="ms-auto d-flex align-items-center gap-3">
+          <span class="text-muted small d-none d-md-inline"
+            ><i class="bx bx-calendar me-1"></i>{% now "D, d M Y" %}</span
+          >
+          <span
+            class="icon-badge bg-label-warning position-relative"
+            style="width: 36px; height: 36px; font-size: 1.15rem"
+            ><i class="bx bx-bell"></i
+          ></span>
+          <div class="dropdown">
+            <a
+              href="#"
+              class="d-flex align-items-center gap-2 text-decoration-none"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <span class="avatar"
+                >{{ request.user.username|default:"A"|slice:":1"|upper }}</span
+              >
+              <span class="d-none d-md-block small fw-semibold text-body"
+                >{{ request.user.username|default:"Admin" }}</span
+              ></a
+            >
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="bx bx-user me-2"></i>My profile</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="bx bx-cog me-2"></i>Settings</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" href="{% url 'login' %}"
+                  ><i class="bx bx-power-off me-2"></i>Log out</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <main class="pt-4">{% block content %}{% endblock %}</main>
+    </div>
+
+    {% block modals %}{% endblock %}
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bx bx-trash text-danger me-2"></i>Delete record
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Delete <strong id="delLabel"></strong>? This cannot be undone.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-label-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel</button
+            ><a href="#" id="delLink" class="btn btn-danger">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      (function () {
+        var sb = document.getElementById("sidebar"),
+          ov = document.getElementById("overlay");
+        function tog() {
+          sb.classList.toggle("show");
+          ov.classList.toggle("show");
+        }
+        document.getElementById("menuBtn").addEventListener("click", tog);
+        ov.addEventListener("click", tog);
+        function filt() {
+          var q = (
+            document.getElementById("globalSearch").value || ""
+          ).toLowerCase();
+          var t = document.getElementById("tableSearch");
+          if (t && t.value) q = t.value.toLowerCase();
+          var sf = document.getElementById("statusFilter"),
+            s = sf ? sf.value : "";
+          document
+            .querySelectorAll(".data-table tbody tr[data-active]")
+            .forEach(function (r) {
+              var ok =
+                r.textContent.toLowerCase().indexOf(q) > -1 &&
+                (!s || r.dataset.active === s);
+              r.style.display = ok ? "" : "none";
+            });
+        }
+        ["globalSearch", "tableSearch", "statusFilter"].forEach(function (id) {
+          var e = document.getElementById(id);
+          if (e) e.addEventListener("input", filt);
+        });
+        var em = document.getElementById("editModal");
+        if (em)
+          em.addEventListener("show.bs.modal", function (ev) {
+            var b = ev.relatedTarget;
+            if (!b) return;
+            var f = em.querySelector("form");
+            f.action = b.dataset.url;
+            Array.prototype.forEach.call(f.elements, function (el) {
+              if (!el.name || el.name === "csrfmiddlewaretoken") return;
+              var v = b.dataset[el.name];
+              if (v === undefined) return;
+              if (el.type === "checkbox") el.checked = v === "1";
+              else el.value = v;
+            });
+          });
+        document
+          .getElementById("deleteModal")
+          .addEventListener("show.bs.modal", function (ev) {
+            var b = ev.relatedTarget;
+            document.getElementById("delLink").href = b.dataset.url;
+            document.getElementById("delLabel").textContent =
+              b.dataset.label || "this record";
+          });
+      })();
+    </script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

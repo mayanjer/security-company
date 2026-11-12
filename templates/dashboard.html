@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load l10n %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+<div class="col-lg-4">
+<div class="card h-100 position-relative overflow-hidden"><div class="card-body">
+<h5 class="mb-1">Welcome back, {{ request.user.first_name|default:request.user.username|default:"Admin" }}!</h5>
+<p class="text-muted small">Guards currently on assignment</p>
+<div class="kpi-big text-primary">{{ deployed_guards_count }}</div>
+<p class="small text-muted mb-3">of {{ total_guards }} registered guard{{ total_guards|pluralize }}</p>
+<a href="{% url 'guard-deployment' %}" class="btn btn-sm btn-primary">View deployments</a>
+<i class="bx bxs-shield-alt-2 hero-icon"></i>
+</div></div></div>
+
+<div class="col-lg-8">
+<div class="card h-100"><div class="card-body">
+<h5 class="mb-1">Operations summary</h5>
+<p class="text-muted small mb-4">{{ active_branches }} active branch{{ active_branches|pluralize:",es" }} and {{ active_shifts }} active shift{{ active_shifts|pluralize }}</p>
+<div class="row g-3">
+<div class="col-6 col-md-3 d-flex align-items-center gap-3"><span class="icon-badge bg-label-primary"><i class="bx bx-shield-quarter"></i></span><div><small class="text-muted d-block">Active guards</small><span class="fw-bold fs-5 text-body">{{ active_guards }}</span></div></div>
+<div class="col-6 col-md-3 d-flex align-items-center gap-3"><span class="icon-badge bg-label-success"><i class="bx bx-buildings"></i></span><div><small class="text-muted d-block">Client organisations</small><span class="fw-bold fs-5 text-body">{{ active_clients }}</span></div></div>
+<div class="col-6 col-md-3 d-flex align-items-center gap-3"><span class="icon-badge bg-label-warning"><i class="bx bx-map-pin"></i></span><div><small class="text-muted d-block">Active deployments</small><span class="fw-bold fs-5 text-body">{{ active_deployments }}</span></div></div>
+<div class="col-6 col-md-3 d-flex align-items-center gap-3"><span class="icon-badge bg-label-info"><i class="bx bx-dollar-circle"></i></span><div><small class="text-muted d-block">Client payments</small><span class="fw-bold fs-5 text-body">{{ total_client_paid|floatformat:"0g" }}</span></div></div>
+</div></div></div></div>
+
+<div class="col-md-6 col-xl-4"><div class="card h-100"><div class="card-header py-3"><h6 class="mb-0">Deployment overview</h6></div>
+<div class="card-body"><canvas id="deployChart" height="200"></canvas>
+<p class="small text-muted mt-3 mb-0">Live counts of deployed guards, active deployments, branches and shifts.</p></div></div></div>
+
+<div class="col-md-6 col-xl-4"><div class="card h-100"><div class="card-header py-3"><h6 class="mb-0">Financial summary</h6></div>
+<div class="card-body"><canvas id="financeChart" height="200"></canvas>
+<div class="d-flex justify-content-between small mt-3"><span class="text-muted">Collection rate</span><strong id="rateTxt">0%</strong></div>
+<div class="progress mt-1" style="height:6px"><div class="progress-bar" id="rateBar" style="width:0%;background:#696CFF"></div></div></div></div></div>
+
+<div class="col-xl-4"><div class="card h-100"><div class="card-header py-3"><h6 class="mb-0">Weapon assignments</h6></div>
+<div class="card-body"><div style="max-width:210px" class="mx-auto"><canvas id="weaponChart"></canvas></div>
+<ul class="list-unstyled small mt-3 mb-0">
+<li class="d-flex justify-content-between"><span><i class="bx bxs-circle text-primary me-1"></i>Assigned</span><strong>{{ assigned_weapons }}</strong></li>
+<li class="d-flex justify-content-between"><span><i class="bx bxs-circle text-success me-1"></i>Available</span><strong>{{ available_weapons }}</strong></li>
+<li class="d-flex justify-content-between"><span><i class="bx bxs-circle text-secondary me-1"></i>Total</span><strong>{{ total_weapons }}</strong></li></ul></div></div></div>
+
+<div class="col-12"><div class="card">
+<div class="card-header d-flex justify-content-between align-items-center py-3"><h6 class="mb-0">Recent guard deployments</h6><a href="{% url 'guard-deployment' %}" class="small">View all</a></div>
+<div class="table-responsive"><table class="table table-hover mb-0">
+<thead><tr><th>Guard</th><th>Client</th><th>Branch</th><th>Shift</th><th>Deployed</th><th>Status</th></tr></thead>
+<tbody>
+{% for o in recent_guard_deployments %}
+<tr><td class="fw-semibold text-body">{{ o.guard.first_name }} {{ o.guard.last_name }}</td><td>{{ o.deployment.client_organisation.client_name }}</td><td>{{ o.deployment.branch.branch_name }}</td><td>{{ o.deployment.shift.name }}</td><td>{{ o.date_deployed|date:"d M Y" }}</td>
+<td>{% if o.deployment_status %}<span class="badge bg-label-success">Deployed</span>{% else %}<span class="badge bg-label-danger">Withdrawn</span>{% endif %}</td></tr>
+{% empty %}
+<tr><td colspan="6" class="text-center text-muted py-4">No guard deployments yet.</td></tr>
+{% endfor %}
+</tbody></table></div></div></div>
+
+<div class="col-lg-6"><div class="card h-100">
+<div class="card-header d-flex justify-content-between align-items-center py-3"><h6 class="mb-0">Recent client payments</h6><a href="{% url 'client-payment' %}" class="small">View all</a></div>
+<div class="card-body">
+{% for o in recent_client_payments %}
+<div class="d-flex align-items-center gap-3 {% if not forloop.last %}mb-3{% endif %}"><span class="icon-badge bg-label-success"><i class="bx bx-down-arrow-circle"></i></span>
+<div class="flex-grow-1"><div class="fw-semibold text-body">{{ o.client_organisation.client_name }}</div><small class="text-muted">{{ o.payment_method }} &middot; {{ o.month }} {{ o.year }}</small></div>
+<span class="fw-semibold text-success">+{{ o.amount_paid|floatformat:"2g" }}</span></div>
+{% empty %}<p class="text-muted text-center my-4">No client payments yet.</p>{% endfor %}
+</div></div></div>
+
+<div class="col-lg-6"><div class="card h-100">
+<div class="card-header d-flex justify-content-between align-items-center py-3"><h6 class="mb-0">Recent weapon assignments</h6><a href="{% url 'weapon-assignment' %}" class="small">View all</a></div>
+<div class="card-body">
+{% for o in recent_weapon_assignments %}
+<div class="d-flex align-items-center gap-3 {% if not forloop.last %}mb-3{% endif %}"><span class="icon-badge bg-label-primary"><i class="bx bx-target-lock"></i></span>
+<div class="flex-grow-1"><div class="fw-semibold text-body">{{ o.weapon.name }}</div><small class="text-muted">{{ o.guard.first_name }} {{ o.guard.last_name }} &middot; {{ o.date_assigned|date:"d M Y" }}</small></div>
+{% if o.assignment_status %}<span class="badge bg-label-warning">Assigned</span>{% else %}<span class="badge bg-label-success">Returned</span>{% endif %}</div>
+{% empty %}<p class="text-muted text-center my-4">No weapon assignments yet.</p>{% endfor %}
+</div></div></div>
+</div>
+{% endblock %}
+
+{% block modals %}{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+var n = function (v) { return Number(v) || 0; };
+var payable = n({{ total_client_payable|default:0|unlocalize }}), paid = n({{ total_client_paid|default:0|unlocalize }}), gpaid = n({{ total_guard_paid|default:0|unlocalize }});
+var opts = { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#eceef1' } }, x: { grid: { display: false } } } };
+new Chart(document.getElementById('deployChart'), { type: 'bar', options: opts, data: { labels: ['Guards deployed', 'Active deployments', 'Branches', 'Shifts'],
+  datasets: [{ data: [n({{ deployed_guards_count }}), n({{ active_deployments }}), n({{ active_branches }}), n({{ active_shifts }})], backgroundColor: ['#696CFF', '#71dd37', '#ffab00', '#03c3ec'], borderRadius: 6 }] } });
+new Chart(document.getElementById('financeChart'), { type: 'bar', options: opts, data: { labels: ['Payable', 'Client paid', 'Guards paid'],
+  datasets: [{ data: [payable, paid, gpaid], backgroundColor: ['#e7e7ff', '#696CFF', '#ffab00'], borderRadius: 6 }] } });
+new Chart(document.getElementById('weaponChart'), { type: 'doughnut', options: { cutout: '70%', plugins: { legend: { display: false } } },
+  data: { labels: ['Assigned', 'Available'], datasets: [{ data: [n({{ assigned_weapons }}), n({{ available_weapons }})], backgroundColor: ['#696CFF', '#71dd37'], borderWidth: 0 }] } });
+var rate = payable ? Math.min(100, Math.round(paid / payable * 100)) : 0;
+document.getElementById('rateTxt').textContent = rate + '%';
+document.getElementById('rateBar').style.width = rate + '%';
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'auth_base.html' %}
+{% block title %}Create account{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card" style="max-width:540px">
+<div class="text-center mb-4"><a class="brand" href="{% url 'index' %}"><i class="bx bxs-shield-alt-2"></i><span>GuardOps</span></a></div>
+<div class="card"><div class="card-body p-4 p-sm-5">
+<h4 class="mb-1">Create your account</h4>
+<p class="text-muted mb-4">Set up access for your security operations team.</p>
+{% for m in messages %}<div class="alert alert-{% if m.tags == 'error' %}danger{% else %}{{ m.tags|default:"info" }}{% endif %} py-2 small">{{ m }}</div>{% endfor %}
+{% if form.errors %}<div class="alert alert-danger py-2 small"><ul class="mb-0 ps-3">{% for f in form %}{% for e in f.errors %}<li>{{ f.label }}: {{ e }}</li>{% endfor %}{% endfor %}{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% endif %}
+<form method="post" action="{% url 'signup' %}" id="signupForm" novalidate>
+{% csrf_token %}
+{{form.as_p}}
+
+
+<div class="col-12"><button type="submit" class="btn btn-primary w-100">Create account</button></div>
+</div>
+</form>
+<p class="text-center mt-4 mb-0">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+</div></div>
+<p class="text-center mt-3 small"><a href="{% url 'index' %}" class="text-muted text-decoration-none"><i class="bx bx-arrow-back me-1"></i>Back to home</a></p>
+</div></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.pw-toggle').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var i = document.getElementById(b.dataset.target), show = i.type === 'password';
+    i.type = show ? 'text' : 'password';
+    b.innerHTML = show ? '<i class="bx bx-hide"></i>' : '<i class="bx bx-show"></i>';
+  });
+});
+</script>
+<script>
+document.getElementById('signupForm').addEventListener('submit', function (e) {
+  var a = document.getElementById('password1'), b = document.getElementById('password2');
+  if (a.value !== b.value) { e.preventDefault(); b.classList.add('is-invalid'); b.focus(); } else { b.classList.remove('is-invalid'); }
+});
+</script>
+{% endblock %}

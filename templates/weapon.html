@@ -1,67 +1,77 @@
-{% load static %} {% load crispy_forms_tags %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/general.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-  </head>
-  <body>
-    <header>
-      <div class="nav-container">
-        <div class="logo">Lubuya Security</div>
-        <ul class="nav-links">
-          <li><a href="{% url 'index' %}">Home</a></li>
-          <li>
-            <a href="{% url 'client-organisation' %}">Client Organisation</a>
-          </li>
-          <li><a href="{% url 'company-branch' %}">Company Branch</a></li>
-          <li><a href="{% url 'guard' %}">Guard</a></li>
-          <li><a href="{% url 'weapon' %}">Weapon</a></li>
-          <li><a href="{% url 'shift' %}">Shift</a></li>
-          <li><a href="{% url 'client-payment' %}">Client Payment</a></li>
-          <li><a href="{% url 'deployment' %}">Deployment</a></li>
-          <li><a href="{% url 'guard-deployment' %}">Guard Deployment</a></li>
-          <li><a href="{% url 'guard-payment' %}">Guard Payment</a></li>
-          <li><a href="{% url 'weapon-assignment' %}">Weapon Assignment</a></li>
-        </ul>
-      </div>
-    </header>
-    <div class="form-container">
-      <div class="form-panel">
-        <div class="form-wrapper">
-          <div class="form-header">
-            <h2>Manage Weapons</h2>
-            <p>Enter your Weapon Details</p>
-          </div>
+{% extends 'base.html' %}
+{% load l10n %}
+{% block title %}Weapons{% endblock %}
 
-          <form class="form" method = "post">
-            {% csrf_token %} {{form|crispy }}
-            <button class="submit-btn">
-              <span>Submit</span>
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <table>
-      <tr>
-        <th>Name</th>
-        <th>Serial Number</th>
-        <th>Type</th>
-      </tr>
-      {% for weapon in weapons %}
-      <tr>
-        <td>{{weapon.name}}</td>
-        <td>{{ weapon.serial_number }}</td>
-        <td>{{ weapon.type }}</td>
-        <td><a href = "{% url 'edit-weapon' weapon.id %}">Edit</a> | <a href = "{% url 'delete-weapon' weapon.id %}">Delete</a></td>
-      </tr>
-      {% endfor %}
-      
-     
-    </table>
-  </body>
-</html>
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+<div class="page-title"><span class="icon-badge bg-label-primary"><i class="bx bx-target-lock"></i></span>
+<div><h4 class="mb-0">Weapons</h4><small class="text-muted">{{ weapons|length }} record{{ weapons|length|pluralize }}</small></div></div>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bx bx-plus me-1"></i>Add Weapon</button>
+</div>
+
+<div class="card">
+<div class="card-header d-flex flex-wrap gap-2 align-items-center justify-content-between py-3">
+<h6 class="mb-0">Weapons list</h6>
+<div class="d-flex gap-2">
+
+<div class="input-group input-group-sm" style="width:220px"><span class="input-group-text bg-white"><i class="bx bx-search"></i></span><input type="search" id="tableSearch" class="form-control" placeholder="Search..."></div>
+</div></div>
+<div class="table-responsive">
+<table class="table table-hover mb-0 data-table">
+<thead><tr><th>#</th><th>Weapon</th><th>Serial number</th><th>Type</th><th class="text-end">Actions</th></tr></thead>
+<tbody>
+{% for o in weapons %}
+<tr data-active="1">
+<td class="text-muted">{{ forloop.counter }}</td>
+<td><span class="fw-semibold text-body">{{ o.name }}</span></td>
+<td>{{ o.serial_number }}</td>
+<td><span class="badge bg-label-info">{{ o.type }}</span></td>
+<td class="text-end text-nowrap">
+<button type="button" class="btn btn-icon btn-sm btn-label-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal" data-url="{% url 'edit-weapon' o.pk %}" data-name="{{ o.name }}" data-serial_number="{{ o.serial_number }}" data-type="{{ o.type }}"><i class="bi bi-pencil-square"></i></button>
+<button type="button" class="btn btn-icon btn-sm btn-label-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-url="{% url 'delete-weapon' o.pk %}" data-label="{{ o.name }}"><i class="bi bi-trash3"></i></button>
+</td>
+</tr>
+{% empty %}
+<tr><td colspan="5" class="text-center text-muted py-5"><i class="bx bx-target-lock fs-1 d-block mb-2"></i>No weapons yet. Use the Add button to create the first one.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+<form method="post" action="{% url 'weapon' %}" class="modal-content">
+{% csrf_token %}
+<div class="modal-header"><h5 class="modal-title"><i class="bx bx-plus-circle text-primary me-2"></i>Add Weapon</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+<div class="modal-body"><div class="row g-3">
+<div class="col-md-6"><label class="form-label" for="a_name">Weapon name</label><input class="form-control" type="text" name="name" id="a_name" maxlength="100" required></div>
+<div class="col-md-6"><label class="form-label" for="a_serial_number">Serial number</label><input class="form-control" type="text" name="serial_number" id="a_serial_number" maxlength="50" required></div>
+<div class="col-md-6"><label class="form-label" for="a_type">Type</label><input class="form-control" type="text" name="type" id="a_type" maxlength="50" required></div>
+</div></div>
+<div class="modal-footer"><button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save Weapon</button></div>
+</form></div></div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+<form method="post" action="#" class="modal-content">
+{% csrf_token %}
+<div class="modal-header"><h5 class="modal-title"><i class="bx bx-edit text-primary me-2"></i>Edit Weapon</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+<div class="modal-body"><div class="row g-3">
+<div class="col-md-6"><label class="form-label" for="e_name">Weapon name</label><input class="form-control" type="text" name="name" id="e_name" maxlength="100" required></div>
+<div class="col-md-6"><label class="form-label" for="e_serial_number">Serial number</label><input class="form-control" type="text" name="serial_number" id="e_serial_number" maxlength="50" required></div>
+<div class="col-md-6"><label class="form-label" for="e_type">Type</label><input class="form-control" type="text" name="type" id="e_type" maxlength="50" required></div>
+</div></div>
+<div class="modal-footer"><button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save changes</button></div>
+</form></div></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('addModal').addEventListener('shown.bs.modal', function () {
+  var f = this.querySelector('input:not([type=hidden]), select'); if (f) f.focus();
+});
+</script>
+{% endblock %}

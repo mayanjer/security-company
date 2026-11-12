@@ -1,12 +1,96 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login
 from .forms import *
+from django.db.models import Sum
 
 # Create your views here.
 def login_view(request):
-    return render(request, 'login.html')
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('dashboard')  # Replace with your dashboard URL name
+    else:
+        form = AuthenticationForm()
+        
+    return render(request, 'login.html', {'form': form})
+
+def sign_up_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Automatically logs the user in after signing up
+            return redirect('dashboard')  # Replace with your dashboard URL name
+    else:
+        form = UserCreationForm()
+        
+    return render(request, 'signup.html', {'form': form})
 
 def index_view(request):
     return render(request, 'index.html')
+
+def dashboard_view(request):
+    # Weapon counts
+    total_weapons = Weapon.objects.count()
+    assigned_weapons = WeaponAssignment.objects.filter(assignment_status=True).count()
+    available_weapons = max(total_weapons - assigned_weapons, 0)
+
+    # Financial aggregations (defaulting to 0 if None)
+    total_client_payable = ClientOrganisation.objects.filter(status=True).aggregate(
+        total=Sum('amount_payable')
+    )['total'] or 0
+
+    total_client_paid = ClientPayment.objects.aggregate(
+        total=Sum('amount_paid')
+    )['total'] or 0
+
+    total_guard_paid = GuardPayment.objects.aggregate(
+        total=Sum('amount_paid')
+    )['total'] or 0
+
+    context = {
+        # Guard metrics
+        'active_guards': Guard.objects.filter(status=True).count(),
+        'total_guards': Guard.objects.count(),
+
+        # Client metrics
+        'active_clients': ClientOrganisation.objects.filter(status=True).count(),
+        'total_client_payable': total_client_payable,
+
+        # Deployment metrics
+        'active_deployments': Deployment.objects.filter(deployment_status=True).count(),
+        'deployed_guards_count': GuardDeployment.objects.filter(deployment_status=True).count(),
+
+        # Weapon metrics
+        'total_weapons': total_weapons,
+        'assigned_weapons': assigned_weapons,
+        'available_weapons': available_weapons,
+
+        # Branch & Shift metrics
+        'active_branches': CompanyBranch.objects.filter(status=True).count(),
+        'active_shifts': Shift.objects.filter(status=True).count(),
+
+        # Payment metrics
+        'total_client_paid': total_client_paid,
+        'total_guard_paid': total_guard_paid,
+
+        # Recent activity lists
+        'recent_guard_deployments': GuardDeployment.objects.select_related(
+            'guard', 'deployment__client_organisation', 'deployment__branch', 'deployment__shift'
+        ).order_by('-date_deployed')[:5],
+
+        'recent_weapon_assignments': WeaponAssignment.objects.select_related(
+            'weapon', 'guard'
+        ).order_by('-date_assigned')[:5],
+
+        'recent_client_payments': ClientPayment.objects.select_related(
+            'client_organisation'
+        ).order_by('-date_paid')[:5],
+    }
+    return render(request, 'dashboard.html', context)
 
 def delete_instance(request, pk):
     return render(request, 'shift.html')
