@@ -14,7 +14,10 @@ urlpatterns = [
 
     path('company_branch/', company_branch_view, name = 'company-branch'),
     path('edit_comapny_branch/<int:pk>', edit_company_branch_view, name = "edit-company-branch"),
+
     path('deployment/', deployment_view, name = "deployment"),
+    path('edit_deployment/<int:pk>', edit_deployment_view, name = 'edit-deployment'),
+    
     path('guard_deployment/', guard_deployment_view, name = 'guard-deployment'),
     path('guard/', guard_view, name = 'guard'),
     path('weapon/', weapon_view, name='weapon'),
