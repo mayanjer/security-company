@@ -70,7 +70,7 @@
         <td>{{organisation.organisation_email}}</td>
         <td>{{organisation.branch}}</td>
         <td>{{organisation.amount_payable}}</td>
-        <td><a href="{% url 'edit-client-organisation' organisation.id %}">Edit</a>  |  <a href = "">Delete</a></td>
+        <td><a href="{% url 'edit-client-organisation' organisation.id %}">Edit</a>  |  <a href = "{% url 'delete-client-organisation' organisation.id %}">Delete</a></td>
       </tr>
       {% endfor %}
       

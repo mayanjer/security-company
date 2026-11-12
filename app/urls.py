@@ -47,5 +47,4 @@ urlpatterns = [
      path('edit_guard_payment/<int:pk>', edit_guard_payment_view, name = 'edit-guard-payment'),
      path('delete_guard_payment/<int:pk>', delete_guard_payment_view, name = 'delete-guard_payment'),
      
-   
 ]

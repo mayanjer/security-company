@@ -64,7 +64,7 @@
         <td>{{deployment.start_date}}</td>
         <td>{{deployment.end_date}}</td>
         <td>{{deployment.shift}}</td>
-        <td><a href = "{% url 'edit-deployment' deployment.id %}">Edit</a> | <a href = "">Delete</a></td>
+        <td><a href = "{% url 'edit-deployment' deployment.id %}">Edit</a> | <a href = "{% url 'delete-deployment' deployment.id %}">Delete</a></td>
       </tr>
       {% endfor %}
       

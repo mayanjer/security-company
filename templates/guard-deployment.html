@@ -56,7 +56,7 @@
       <tr>
         <td>{{deployment.guard}}</td>
         <td>{{deployment.deployment.branch}}</td>
-        <td><a href = "{% url 'edit-guard-deployment' deployment.id %}">Edit</a> | <a href = "">Delete</a></td>
+        <td><a href = "{% url 'edit-guard-deployment' deployment.id %}">Edit</a> | <a href = "{% url 'delete-guard-deployment' deployment.id %}">Delete</a></td>
       </tr>
       {% endfor %}
      

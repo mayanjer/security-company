@@ -57,7 +57,7 @@
         <td>{{weapon.name}}</td>
         <td>{{ weapon.serial_number }}</td>
         <td>{{ weapon.type }}</td>
-        <td><a href = "{% url 'edit-weapon' weapon.id %}">Edit</a> | <a href = "">Delete</a></td>
+        <td><a href = "{% url 'edit-weapon' weapon.id %}">Edit</a> | <a href = "{% url 'delete-weapon' weapon.id %}">Delete</a></td>
       </tr>
       {% endfor %}
       

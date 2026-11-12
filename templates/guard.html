@@ -67,7 +67,7 @@
 
         <td>{{guard.address}}</td>
         <td>{{guard.salary}}</td>
-        <td><a href = "{% url 'edit-guard' guard.id %}">Edit</a> | <a href = "">Delete</a></td>
+        <td><a href = "{% url 'edit-guard' guard.id %}">Edit</a> | <a href = "{% url 'delete-guard' guard.id %}">Delete</a></td>
       </tr>
       {% endfor %}
      
