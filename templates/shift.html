@@ -58,7 +58,7 @@
         <td>{{shift.name}}</td>
         <td>{{shift.start_time}}</td>
         <td>{{shift.end_time}}</td>
-        <td><a href="{% url 'edit-shift' shift.id %}">Edit</a> | <a href="">Delete</a></td>
+        <td><a href="{% url 'edit-shift' shift.id %}">Edit</a> | <a href="{% url 'delete-shift' shift.id %}">Delete</a></td>
       </tr>
       {% endfor %}
     </table>
