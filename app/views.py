@@ -185,6 +185,19 @@ def guard_payment_view(request):
     context = {'form':form, 'payments':payments}
     return render(request, 'guard-payment.html', context)
 
+def edit_guard_payment_view(request, pk):
+    payment = GuardPayment.objects.get(pk = pk)
+    if request.method == 'POST':
+        form = GuardPaymentForm(request.POST, instance = payment)
+        if form.is_valid():
+            form.save()
+            return redirect(guard_payment_view)
+    else:
+        form = GuardPaymentForm(instance=payment)
+
+    context = {'form':form}
+    return render(request, 'edit-guard-payment.html', context)
+
 def weapon_assignment_view(request):
     if request.method == "POST":
         form = WeaponAssignmentForm(request.POST)

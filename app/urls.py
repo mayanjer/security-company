@@ -29,6 +29,7 @@ urlpatterns = [
      path('shift/', shift_view, name = 'shift'),
      path('edit-shift/<int:pk>', edit_shift_view, name = "edit-shift"),
 
-     path('guard_payment/', guard_payment_view, name = 'guard-payment')
+     path('guard_payment/', guard_payment_view, name = 'guard-payment'),
+     path('edit_guard_payment/<int:pk>', edit_guard_payment_view, name = 'edit-guard-payment'),
    
 ]

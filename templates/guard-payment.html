@@ -66,6 +66,7 @@
         <td>{{payment.month}}</td>
 
         <td>{{payment.year}}</td>
+        <td><a href="{% url 'edit-guard-payment' payment.id %}">Edit</a> | <a href="">Delete</a></td>
       </tr>
       {% endfor %}
     
