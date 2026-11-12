@@ -220,3 +220,15 @@ def weapon_assignment_view(request):
     assignemts = WeaponAssignment.objects.all() 
     context = {'form':form, 'assignments':assignemts}
     return render(request, 'weapon-assignment.html', context)
+
+def edit_weapon_assignment(request, pk):
+    assignment = WeaponAssignment.objects.get(pk = pk)
+    if request.method == "POST":
+        form = WeaponAssignmentForm(request.POST, instance = assignment)
+        if form.is_valid():
+            form.save()
+            return redirect(weapon_assignment_view)
+    else:
+        form = WeaponAssignmentForm(instance = assignment)
+    context = {'form':form}
+    return render(request, 'edit-weapon-assignment.html', context)

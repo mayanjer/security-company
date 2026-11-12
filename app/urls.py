@@ -24,9 +24,10 @@ urlpatterns = [
 
     path('guard/', guard_view, name = 'guard'),
     path('edit-guard/<int:pk>', edit_guard_view, name = 'edit-guard'),
-    
+
     path('weapon/', weapon_view, name='weapon'),
     path('weapon_assignment/', weapon_assignment_view, name = 'weapon-assignment'),
+    path('edit-weapon-assignment/<int:pk>', edit_weapon_assignment, name = 'edit-weapon-assignment'),
 
      path('shift/', shift_view, name = 'shift'),
      path('edit-shift/<int:pk>', edit_shift_view, name = "edit-shift"),
