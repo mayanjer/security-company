@@ -26,6 +26,7 @@ urlpatterns = [
     path('edit-guard/<int:pk>', edit_guard_view, name = 'edit-guard'),
 
     path('weapon/', weapon_view, name='weapon'),
+    path('edit_weapon/<int:pk>', edit_weapon_view, name = 'edit-weapon'),
     path('weapon_assignment/', weapon_assignment_view, name = 'weapon-assignment'),
     path('edit-weapon-assignment/<int:pk>', edit_weapon_assignment, name = 'edit-weapon-assignment'),
 

@@ -44,7 +44,16 @@ def weapon_view(request):
     return render(request, 'weapon.html', context)
 
 def edit_weapon_view(request, pk):
-    return render(request, 'edit', context)
+    weapon = Weapon.objects.get(pk = pk)
+    if request.method == "POST":
+        form = WeaponForm(request.POST, instance = weapon)
+        if form.is_valid():
+            form.save()
+            return redirect(weapon_view)
+    else:
+        form = WeaponForm(instance = weapon)
+        context = {'form':form}
+    return render(request, 'edit-weapon.html', context)
 
 def client_organisation_view(request):
     if request.method == "POST":
