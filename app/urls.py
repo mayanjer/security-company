@@ -23,6 +23,8 @@ urlpatterns = [
 
 
     path('guard/', guard_view, name = 'guard'),
+    path('edit-guard/<int:pk>', edit_guard_view, name = 'edit-guard'),
+    
     path('weapon/', weapon_view, name='weapon'),
     path('weapon_assignment/', weapon_assignment_view, name = 'weapon-assignment'),
 

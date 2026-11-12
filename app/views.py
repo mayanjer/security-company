@@ -175,6 +175,19 @@ def guard_view(request):
     context = {'form':form, 'guards':guards}
     return render(request, 'guard.html', context)
 
+def edit_guard_view(request, pk):
+    guard = Guard.objects.get(pk = pk)
+    if request.method == "POST":
+        form = GuardForm(request.POST, instance = guard)
+        if form.is_valid():
+            form.save()
+            return redirect(guard_view)
+
+    else:
+        form = GuardForm(instance = guard)
+    context = {'form':form}
+    return render(request, 'edit-guard.html', context)
+
 def guard_payment_view(request):
     if request.method == "POST":
         form = GuardPaymentForm(request.POST)
