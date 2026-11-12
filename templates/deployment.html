@@ -7,9 +7,7 @@
   class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
   <div class="page-title"><span class="icon-badge bg-label-primary"><i
         class="bx bx-map-pin"></i></span>
-    <div><h4 class="mb-0">Deployments</h4><small class="text-muted">{{
-        deployments|length }} record{{ deployments|length|pluralize
-        }}</small></div></div>
+    <div><h4 class="mb-0">Deployments</h4><small class="text-muted">{{ deployments|length }} record{{ deployments|length|pluralize }}</small></div></div>
   <button type="button" class="btn btn-primary" data-bs-toggle="modal"
     data-bs-target="#addModal"><i class="bx bx-plus me-1"></i>Add
     Deployment</button>
@@ -37,12 +35,10 @@
         {% for o in deployments %}
         <tr data-active="{{ o.deployment_status|yesno:"1,0" }}">
           <td class="text-muted">{{ forloop.counter }}</td>
-          <td><span class="fw-semibold text-body">{{
-              o.client_organisation.client_name }}</span></td>
+          <td><span class="fw-semibold text-body">{{ o.client_organisation.client_name }}</span></td>
           <td>{{ o.branch.branch_name }}</td>
           <td><div class="fw-semibold text-body">{{ o.shift.name }}</div><small
-              class="text-muted">{{ o.shift.start_time|time:"h:i A" }} - {{
-              o.shift.end_time|time:"h:i A" }}</small></td>
+              class="text-muted">{{ o.shift.start_time|time:"h:i A" }} - {{ o.shift.end_time|time:"h:i A" }}</small></td>
           <td>{{ o.start_date|date:"d M Y"|default:"-" }}</td>
           <td>{{ o.end_date|date:"d M Y"|default:"-" }}</td>
           <td>{% if o.deployment_status %}<span
@@ -161,9 +157,7 @@
               for="e_shift">Shift</label><select class="form-select"
               name="shift" id="e_shift" required><option
                 value>Select...</option>
-                {% for o in form.shift.field.queryset %}<option value="{{ o.pk }}">{{ o.name }} ({{
-                o.start_time|time:"H:i" }} - {{ o.end_time|time:"H:i"
-                }})</option>
+                {% for o in form.shift.field.queryset %}<option value="{{ o.pk }}">{{ o.name }} ({{ o.start_time|time:"H:i" }} - {{ o.end_time|time:"H:i" }})</option>
                 {% endfor %}
               </select></div>
           <div class="col-md-6"><label class="form-label"

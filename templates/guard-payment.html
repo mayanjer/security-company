@@ -7,9 +7,8 @@
   class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
   <div class="page-title"><span class="icon-badge bg-label-primary"><i
         class="bx bx-wallet"></i></span>
-    <div><h4 class="mb-0">Guard Payments</h4><small class="text-muted">{{
-        payments|length }} record{{ payments|length|pluralize
-        }}</small></div></div>
+    <div><h4 class="mb-0">Guard Payments</h4><small class="text-muted">
+      {{ payments|length }} record{{ payments|length|pluralize }}</small></div></div>
   <button type="button" class="btn btn-primary" data-bs-toggle="modal"
     data-bs-target="#addModal"><i class="bx bx-plus me-1"></i>Add Guard
     Payment</button>
@@ -35,12 +34,11 @@
         {% for o in payments %}
         <tr data-active="1">
           <td class="text-muted">{{ forloop.counter }}</td>
-          <td><span class="fw-semibold text-body">{{ o.guard.first_name }} {{
-              o.guard.last_name }}</span></td>
+          <td><span class="fw-semibold text-body">{{ o.guard.first_name }} 
+            {{ o.guard.last_name }}</span></td>
           <td>{{ o.amount_paid|floatformat:"2g" }}</td>
           <td>{{ o.date_paid|date:"d M Y"|default:"-" }}</td>
-          <td><span class="badge bg-label-primary">{{ o.payment_method
-              }}</span></td>
+          <td><span class="badge bg-label-primary">{{ o.payment_method }}</span></td>
           <td>{{ o.month }} {{ o.year }}</td>
           <td class="text-end text-nowrap">
             <button type="button" class="btn btn-icon btn-sm btn-label-primary"

@@ -1,17 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from .forms import *
 from django.db.models import Sum
 
 # Create your views here.
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('dashboard')  # Replace with your dashboard URL name
+            return redirect(dashboard_view)
     else:
         form = AuthenticationForm()
         
@@ -22,8 +24,8 @@ def sign_up_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Automatically logs the user in after signing up
-            return redirect('dashboard')  # Replace with your dashboard URL name
+            login(request, user)
+            return redirect(dashboard_view)
     else:
         form = UserCreationForm()
         
@@ -32,6 +34,7 @@ def sign_up_view(request):
 def index_view(request):
     return render(request, 'index.html')
 
+@login_required
 def dashboard_view(request):
     # Weapon counts
     total_weapons = Weapon.objects.count()
@@ -92,9 +95,8 @@ def dashboard_view(request):
     }
     return render(request, 'dashboard.html', context)
 
-def delete_instance(request, pk):
-    return render(request, 'shift.html')
 
+@login_required
 def shift_view(request):
     if request.method == "POST":
         print(request.POST)
@@ -108,6 +110,7 @@ def shift_view(request):
     context = {'form':form, 'shifts':shifts}
     return render(request, 'shift.html', context)
 
+@login_required
 def edit_shift_view(request, pk):
     shift = Shift.objects.get(pk = pk)
     if request.method == "POST":
@@ -120,10 +123,12 @@ def edit_shift_view(request, pk):
     context = {'form':form}
     return render(request, 'shift.html', context)
 
+@login_required
 def delete_shift_view(request, pk):
     Shift.objects.get(pk =pk).delete()
     return redirect(shift_view)
 
+@login_required
 def weapon_view(request):
     if request.method == "POST":
         form = WeaponForm(request.POST)
@@ -133,7 +138,7 @@ def weapon_view(request):
     weapons = Weapon.objects.all()
     context = {'form':form, 'weapons':weapons}
     return render(request, 'weapon.html', context)
-
+@login_required
 def edit_weapon_view(request, pk):
     weapon = Weapon.objects.get(pk = pk)
     if request.method == "POST":
@@ -146,10 +151,12 @@ def edit_weapon_view(request, pk):
         context = {'form':form}
     return render(request, 'edit-weapon.html', context)
 
+@login_required
 def delete_weapon_view(request, pk):
     Weapon.objects.get(pk =pk).delete()
     return redirect(delete_weapon_view)
 
+@login_required
 def client_organisation_view(request):
     if request.method == "POST":
         form = ClientOrganisationForm(request.POST)
@@ -163,6 +170,7 @@ def client_organisation_view(request):
         }
     return render(request, 'client-organisation.html', context)
 
+@login_required
 def edit_client_organisation_view(request, pk):
     organisation = ClientOrganisation.objects.get(pk = pk)
 
@@ -176,10 +184,12 @@ def edit_client_organisation_view(request, pk):
     context = {'form':form}
     return render(request, 'edit-client-organisation.html', context)
 
+@login_required
 def delete_client_organisation_view(request, pk):
     ClientOrganisation.objects.get(pk =pk).delete()
     return redirect(client_organisation_view)
 
+@login_required
 def client_payment_view(request):
     if request.method == "POST":
         form = ClientPaymentForm(request.POST)
@@ -192,6 +202,7 @@ def client_payment_view(request):
                'payments':payments}
     return render(request, 'client-payment.html', context)
 
+@login_required
 def edit_client_payment(request, pk):
     payment = ClientPayment.objects.get(pk=pk)
     if request.method == "POST":
@@ -205,10 +216,12 @@ def edit_client_payment(request, pk):
     context = {'form':form}
     return render(request, 'edit-client-payment.html', context)
 
+@login_required
 def delete_client_payment_view(request, pk):
     ClientPayment.objects.get(pk =pk).delete()
     return redirect(client_payment_view)
 
+@login_required
 def company_branch_view(request):
     if request.method == "POST":
         form = CompanyBranchForm(request.POST)
@@ -219,6 +232,7 @@ def company_branch_view(request):
     context = {'form':form, 'branches':branches}
     return render(request, 'company-branch.html', context)
 
+@login_required
 def edit_company_branch_view(request, pk):
     branch = CompanyBranch.objects.get(pk = pk)
     if request.method == "POST":
@@ -231,10 +245,12 @@ def edit_company_branch_view(request, pk):
     context = {'form':form}
     return render(request, 'edit-company-branch.html', context)
 
+@login_required
 def delete_company_branch_view(request, pk):
     CompanyBranch.objects.get(pk =pk).delete()
     return redirect(company_branch_view)
 
+@login_required
 def deployment_view(request):
     if request.method == "POST":
         form = DeploymentForm(request.POST)
@@ -245,6 +261,7 @@ def deployment_view(request):
     context = {'form':form, 'deployments':deployments}
     return render(request, 'deployment.html', context)
 
+@login_required
 def edit_deployment_view(request, pk):
     deployment = Deployment.objects.get(pk = pk)
     if request.method == "POST":
@@ -258,10 +275,12 @@ def edit_deployment_view(request, pk):
     context = {'form':form}
     return render(request, 'edit-deployment.html', context)
 
+@login_required
 def delete_deployment_view(request, pk):
     Deployment.objects.get(pk =pk).delete()
     return redirect(deployment_view)
 
+@login_required
 def guard_deployment_view(request):
     if request.method == "POST":
         form = GuardDeploymentForm(request.POST)
@@ -272,6 +291,7 @@ def guard_deployment_view(request):
     context = {'form':form, 'deployments':deployments}
     return render(request, 'guard-deployment.html', context)
 
+@login_required
 def edit_guard_deployment_view(request, pk):
     deployment = GuardDeployment.objects.get(pk = pk)
     if request.method == "POST":
@@ -285,10 +305,12 @@ def edit_guard_deployment_view(request, pk):
     context = {'form':form}
     return render(request, 'edit-guard-deployment.html', context)
 
+@login_required
 def delete_guard_deployment_view(request, pk):
     GuardDeployment.objects.get(pk =pk).delete()
     return redirect(guard_deployment_view)
 
+@login_required
 def guard_view(request):
     if request.method == "POST":
         form = GuardForm(request.POST)
@@ -298,7 +320,7 @@ def guard_view(request):
     guards = Guard.objects.all()
     context = {'form':form, 'guards':guards}
     return render(request, 'guard.html', context)
-
+@login_required
 def edit_guard_view(request, pk):
     guard = Guard.objects.get(pk = pk)
     if request.method == "POST":
@@ -312,10 +334,12 @@ def edit_guard_view(request, pk):
     context = {'form':form}
     return render(request, 'edit-guard.html', context)
 
+@login_required
 def delete_guard_view(request, pk):
     Guard.objects.get(pk =pk).delete()
     return redirect(guard_view)
 
+@login_required
 def guard_payment_view(request):
     if request.method == "POST":
         form = GuardPaymentForm(request.POST)
@@ -326,6 +350,7 @@ def guard_payment_view(request):
     context = {'form':form, 'payments':payments}
     return render(request, 'guard-payment.html', context)
 
+@login_required
 def edit_guard_payment_view(request, pk):
     payment = GuardPayment.objects.get(pk = pk)
     if request.method == 'POST':
@@ -339,10 +364,12 @@ def edit_guard_payment_view(request, pk):
     context = {'form':form}
     return render(request, 'edit-guard-payment.html', context)
 
+@login_required
 def delete_guard_payment_view(request, pk):
     GuardPayment.objects.get(pk =pk).delete()
     return redirect(guard_payment_view)
 
+@login_required
 def weapon_assignment_view(request):
     if request.method == "POST":
         form = WeaponAssignmentForm(request.POST)
@@ -352,7 +379,7 @@ def weapon_assignment_view(request):
     assignemts = WeaponAssignment.objects.all() 
     context = {'form':form, 'assignments':assignemts}
     return render(request, 'weapon-assignment.html', context)
-
+@login_required
 def edit_weapon_assignment(request, pk):
     assignment = WeaponAssignment.objects.get(pk = pk)
     if request.method == "POST":
@@ -364,7 +391,7 @@ def edit_weapon_assignment(request, pk):
         form = WeaponAssignmentForm(instance = assignment)
     context = {'form':form}
     return render(request, 'edit-weapon-assignment.html', context)
-
+@login_required
 def delete_weapon_assignmemt_view(request, pk):
     WeaponAssignment.objects.get(pk =pk).delete()
     return redirect(weapon_assignment_view)
