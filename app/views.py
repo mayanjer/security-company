@@ -103,11 +103,14 @@ def shift_view(request):
         form = ShiftForm(request.POST)
         if form.is_valid():
             form.save()
+            message = "Success. The Shift has been saved successfully"
         else:
-            print("failed")
-    form = ShiftForm()
+            message = "An error occured. Shift couldnt be saved"
+    else:
+        form = ShiftForm()
+        message = ""
     shifts = Shift.objects.all()
-    context = {'form':form, 'shifts':shifts}
+    context = {'form':form, 'shifts':shifts, 'message':message}
     return render(request, 'shift.html', context)
 
 @login_required
