@@ -137,9 +137,15 @@ def weapon_view(request):
         form = WeaponForm(request.POST)
         if form.is_valid():
             form.save()
-    form = WeaponForm()
+            message = "Weapon successfully saved"
+        else:
+            message = "An error occured. Failed to save the Weapon"
+    else:
+        message = ""
+        form = WeaponForm()
     weapons = Weapon.objects.all()
-    context = {'form':form, 'weapons':weapons}
+    context = {'form':form, 'weapons':weapons, 'message':message}
+    
     return render(request, 'weapon.html', context)
 @login_required
 def edit_weapon_view(request, pk):
