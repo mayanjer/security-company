@@ -1,4 +1,5 @@
 {% load static %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -157,8 +158,9 @@
           </div>
         </div>
       </header>
-      <main class="pt-4">{% block content %}{% endblock %}</main>
-    </div>
+    
+      <main class="pt-4"><div class = "text-danger p-2 rounded-3 display-8 fw-semibold">{% block message %}{% endblock %}</div>{% block content %}{% endblock %}</main>
+ 
 
     {% block modals %}{% endblock %}
 

@@ -2,6 +2,7 @@
 {% load l10n %}
 {% block title %}Client Payments{% endblock %}
 
+{% block message %}{{ message }}{% endblock %}
 {% block content %}
 <div
   class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
@@ -85,10 +86,8 @@
               for="a_client_organisation">Client organisation</label><select
               class="form-select" name="client_organisation"
               id="a_client_organisation" required><option
-                value>Select...</option>{% for o in
-              form.client_organisation.field.queryset %}<option
-                value="{{ o.pk }}">{{ o.client_name }} ({{ o.code }})</option>{%
-              endfor %}</select></div>
+                value>Select...</option>{% for o in form.client_organisation.field.queryset %}<option
+                value="{{ o.pk }}">{{ o.client_name }} ({{ o.code }})</option>{% endfor %}</select></div>
           <div class="col-md-6"><label class="form-label"
               for="a_amount_paid">Amount paid</label><input class="form-control"
               type="number" name="amount_paid" id="a_amount_paid" step="0.01"

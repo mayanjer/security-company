@@ -2,6 +2,7 @@
 {% load l10n %}
 {% block title %}Guard Payments{% endblock %}
 
+{% block message %}{{ message }}{% endblock %}
 {% block content %}
 <div
   class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
@@ -132,11 +133,8 @@
                     <div class="col-md-6"><label class="form-label"
                         for="e_guard">Guard</label><select class="form-select"
                         name="guard" id="e_guard" required><option
-                          value>Select...</option>{% for o in
-                        form.guard.field.queryset %}<option
-                          value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name
-                          }} - {{ o.id_number }}</option>{% endfor
-                        %}</select></div>
+                          value>Select...</option>{% for o in form.guard.field.queryset %}<option
+                          value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name}} - {{ o.id_number }}</option>{% endfor %}</select></div>
                     <div class="col-md-6"><label class="form-label"
                         for="e_amount_paid">Amount paid</label><input
                         class="form-control" type="number" name="amount_paid"

@@ -2,6 +2,7 @@
 {% load l10n %}
 {% block title %}Guard Deployments{% endblock %}
 
+{% block message %}{{ message }} {% endblock %}
 {% block content %}
 <div
   class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
@@ -91,16 +92,12 @@
               name="guard" id="a_guard" required><option
                 value>Select...</option>
                 {% for o in form.guard.field.queryset%}
-                <option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }}
-                - {{ o.id_number }}</option>{% endfor %}</select></div>
+                <option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }} - {{ o.id_number }}</option>{% endfor %}</select></div>
           <div class="col-md-6"><label class="form-label"
               for="a_deployment">Deployment</label><select class="form-select"
               name="deployment" id="a_deployment" required><option
                 value>Select...</option>{% for o in form.deployment.field.queryset %}
-                <option value="{{ o.pk }}">#{{
-                o.pk }} {{ o.client_organisation.client_name }} / {{
-                o.branch.branch_name }} ({{ o.start_date|date:"d M Y"
-                }})</option>
+                <option value="{{ o.pk }}">#{{ o.pk }} {{ o.client_organisation.client_name }} / {{ o.branch.branch_name }} ({{ o.start_date|date:"d M Y" }})</option>
                 {% endfor %}
               </select></div>
           <div class="col-12"><div class="form-check form-switch"><input
@@ -130,16 +127,12 @@
               name="guard" id="e_guard" required><option
                 value>Select...</option>
                 {% for o in form.guard.field.queryset %}
-                <option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }}
-                - {{ o.id_number }}</option>{% endfor %}</select></div>
+                <option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }}  - {{ o.id_number }}</option>{% endfor %}</select></div>
           <div class="col-md-6"><label class="form-label"
               for="e_deployment">Deployment</label><select class="form-select"
               name="deployment" id="e_deployment" required><option
                 value>Select...</option>{% for o in form.deployment.field.queryset %}
-                <option value="{{ o.pk }}">#{{
-                o.pk }} {{ o.client_organisation.client_name }} / {{
-                o.branch.branch_name }} ({{ o.start_date|date:"d M Y"
-                }})</option>{% endfor %}</select></div>
+                <option value="{{ o.pk }}">#{{ o.pk }} {{ o.client_organisation.client_name }} / {{ o.branch.branch_name }} ({{ o.start_date|date:"d M Y" }})</option>{% endfor %}</select></div>
           <div class="col-12"><div class="form-check form-switch"><input
                 class="form-check-input" type="checkbox" role="switch"
                 name="deployment_status" id="e_deployment_status"><label

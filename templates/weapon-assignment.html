@@ -2,6 +2,7 @@
 {% load l10n %}
 {% block title %}Weapon Assignments{% endblock %}
 
+{% block message %}{{ message }}{% endblock %}
 {% block content %}
 <div
   class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
@@ -88,13 +89,11 @@
               for="a_weapon">Weapon</label><select class="form-select"
               name="weapon" id="a_weapon" required><option
                 value>Select...</option>
-                {% for o in form.weapon.field.queryset %}<option value="{{ o.pk }}">{{ o.name }} ({{ o.serial_number
-                }})</option>{% endfor %}</select></div>
+                {% for o in form.weapon.field.queryset %}<option value="{{ o.pk }}">{{ o.name }} ({{ o.serial_number }})</option>{% endfor %}</select></div>
           <div class="col-md-6"><label class="form-label"
               for="a_guard">Guard</label><select class="form-select"
               name="guard" id="a_guard" required><option
-                value>Select...</option>{% for o in form.guard.field.queryset %}<option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }}
-                - {{ o.id_number }}</option>{% endfor %}</select></div>
+                value>Select...</option>{% for o in form.guard.field.queryset %}<option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }} - {{ o.id_number }}</option>{% endfor %}</select></div>
           <div class="col-12"><div class="form-check form-switch"><input
                 class="form-check-input" type="checkbox" role="switch"
                 name="assignment_status" id="a_assignment_status" checked><label
@@ -123,14 +122,12 @@
           <div class="col-md-6"><label class="form-label"
               for="e_weapon">Weapon</label><select class="form-select"
               name="weapon" id="e_weapon" required><option
-                value>Select...</option>{% for o in form.weapon.field.queryset %}<option value="{{ o.pk }}">{{ o.name }} ({{ o.serial_number
-                }})</option>{% endfor %}</select></div>
+                value>Select...</option>{% for o in form.weapon.field.queryset %}<option value="{{ o.pk }}">{{ o.name }} ({{ o.serial_number }})</option>{% endfor %}</select></div>
           <div class="col-md-6"><label class="form-label"
               for="e_guard">Guard</label><select class="form-select"
               name="guard" id="e_guard" required><option
                 value>Select...</option>{% for o in form.guard.field.queryset %}
-                <option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }}
-                - {{ o.id_number }}</option>{% endfor %}</select></div>
+                <option value="{{ o.pk }}">{{ o.first_name }} {{ o.last_name }} - {{ o.id_number }}</option>{% endfor %}</select></div>
           <div class="col-12"><div class="form-check form-switch"><input
                 class="form-check-input" type="checkbox" role="switch"
                 name="assignment_status" id="e_assignment_status"><label

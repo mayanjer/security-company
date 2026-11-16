@@ -7,6 +7,9 @@ from django.db.models import Sum
 
 # Create your views here.
 
+SUCCESS_MESSAGE = "Success, the record has been saved"
+ERROR_MESSAGE = "An error occured. Failed to save record"
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -98,14 +101,18 @@ def dashboard_view(request):
 
 @login_required
 def shift_view(request):
+   
     if request.method == "POST":
         print(request.POST)
         form = ShiftForm(request.POST)
+        print(form.is_valid())
+        
         if form.is_valid():
             form.save()
-            message = "Success. The Shift has been saved successfully"
+            
+            message = SUCCESS_MESSAGE
         else:
-            message = "An error occured. Shift couldnt be saved"
+            message = ERROR_MESSAGE
     else:
         form = ShiftForm()
         message = ""
@@ -137,9 +144,9 @@ def weapon_view(request):
         form = WeaponForm(request.POST)
         if form.is_valid():
             form.save()
-            message = "Weapon successfully saved"
+            message = SUCCESS_MESSAGE
         else:
-            message = "An error occured. Failed to save the Weapon"
+            message = ERROR_MESSAGE
     else:
         message = ""
         form = WeaponForm()
@@ -171,11 +178,18 @@ def client_organisation_view(request):
         form = ClientOrganisationForm(request.POST)
         if form.is_valid():
             form.save()
-    form = ClientOrganisationForm()
+            message = SUCCESS_MESSAGE
+        else:
+            message = ERROR_MESSAGE
+    else:
+        form = ClientOrganisationForm()
+        message = ""
+
     organisations = ClientOrganisation.objects.all()
     context = {
         'form': form,
-        'organisations':organisations
+        'organisations':organisations,
+        'message':message
         }
     return render(request, 'client-organisation.html', context)
 
@@ -204,11 +218,15 @@ def client_payment_view(request):
         form = ClientPaymentForm(request.POST)
         if form.is_valid():
             form.save()
-
-    form = ClientPaymentForm()
+            message = SUCCESS_MESSAGE
+        else:
+            message = ERROR_MESSAGE
+    else:
+        message = ""
+        form = ClientPaymentForm()
     payments = ClientPayment.objects.all()
     context = {'form':form,
-               'payments':payments}
+               'payments':payments, 'message':message}
     return render(request, 'client-payment.html', context)
 
 @login_required
@@ -236,9 +254,14 @@ def company_branch_view(request):
         form = CompanyBranchForm(request.POST)
         if form.is_valid():
             form.save()
-    form = CompanyBranchForm()
+            message = SUCCESS_MESSAGE
+        else:
+            message = ERROR_MESSAGE
+    else:
+        message = ""
+        form = CompanyBranchForm()
     branches = CompanyBranch.objects.all()
-    context = {'form':form, 'branches':branches}
+    context = {'form':form, 'branches':branches, 'message':message}
     return render(request, 'company-branch.html', context)
 
 @login_required
@@ -265,9 +288,14 @@ def deployment_view(request):
         form = DeploymentForm(request.POST)
         if form.is_valid():
             form.save()
-    form = DeploymentForm()
+            message = SUCCESS_MESSAGE
+        else:
+            message = ERROR_MESSAGE
+    else:
+        message = ""
+        form = DeploymentForm()
     deployments = Deployment.objects.all()
-    context = {'form':form, 'deployments':deployments}
+    context = {'form':form, 'deployments':deployments, 'message':message}
     return render(request, 'deployment.html', context)
 
 @login_required
@@ -295,9 +323,14 @@ def guard_deployment_view(request):
         form = GuardDeploymentForm(request.POST)
         if form.is_valid():
             form.save()
-    form = GuardDeploymentForm()
+            message = SUCCESS_MESSAGE
+        else:
+            message = ERROR_MESSAGE
+    else:
+        message = ""
+        form = GuardDeploymentForm()
     deployments = GuardDeployment.objects.all()
-    context = {'form':form, 'deployments':deployments}
+    context = {'form':form, 'deployments':deployments, 'message':message}
     return render(request, 'guard-deployment.html', context)
 
 @login_required
@@ -323,11 +356,16 @@ def delete_guard_deployment_view(request, pk):
 def guard_view(request):
     if request.method == "POST":
         form = GuardForm(request.POST)
-        if form.is_valid():
+        if form.is_valid():  
             form.save()
-    form = GuardForm()
+            message = SUCCESS_MESSAGE
+        else:
+            message = ERROR_MESSAGE
+    else:
+        message = ""
+        form = GuardForm()
     guards = Guard.objects.all()
-    context = {'form':form, 'guards':guards}
+    context = {'form':form, 'guards':guards, 'message':message}
     return render(request, 'guard.html', context)
 @login_required
 def edit_guard_view(request, pk):
@@ -354,9 +392,14 @@ def guard_payment_view(request):
         form = GuardPaymentForm(request.POST)
         if form.is_valid():
             form.save()
-    form = GuardPaymentForm()
+            message = SUCCESS_MESSAGE
+        else:
+            message = ERROR_MESSAGE
+    else:
+        message = ""
+        form = GuardPaymentForm()
     payments = GuardPayment.objects.all()
-    context = {'form':form, 'payments':payments}
+    context = {'form':form, 'payments':payments, 'message':message}
     return render(request, 'guard-payment.html', context)
 
 @login_required
@@ -384,9 +427,14 @@ def weapon_assignment_view(request):
         form = WeaponAssignmentForm(request.POST)
         if form.is_valid():
             form.save()
-    form = WeaponAssignmentForm()
+            message = SUCCESS_MESSAGE
+        else:
+            message = ERROR_MESSAGE
+    else:
+        message = ""
+        form = WeaponAssignmentForm()
     assignemts = WeaponAssignment.objects.all() 
-    context = {'form':form, 'assignments':assignemts}
+    context = {'form':form, 'assignments':assignemts, 'message':message}
     return render(request, 'weapon-assignment.html', context)
 @login_required
 def edit_weapon_assignment(request, pk):
